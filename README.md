@@ -8,11 +8,10 @@ format, models can be provided in  [SBML](http://sbml.org) or  [SBtab](https://w
 
 ### Matlab
 To run parameter balancing in matlab, please adjust  the demo scripts in `matlab/demo`  to your model and data.
-For help, please type `help parameter-balancing`  in matlab, or see  the documentation at
-www.metabolic-economics.de/parameter-balancing/matlab-doc/. 
+For help, please type `help parameter-balancing`  in matlab. 
 
 ### Python
-For using model balancing in python, please refer to the [www.parameterbalancing.net](https://www.parameterbalancing.net) page. More recent code is found on [our GitLab repository](https://gitlab.com/elad.noor/parameter-balancing)
+For using model balancing in python, please refer to the [www.parameterbalancing.net](https://www.parameterbalancing.net) page. More recent code is found on our GitLab repository [gitlab.com/elad.noor/parameter-balancing](https://gitlab.com/elad.noor/parameter-balancing)
 
 ## Installation
 The following installation instructions are only for the Matlab version (also see the file `INSTALLATION` in this directory).
