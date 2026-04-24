@@ -16,10 +16,10 @@ The calculation procedure can be customised. For a list of options, see "paramet
 
 ### Demo scripts
 
-  demo_parameter_balancing        - Model E. coli central carbon metabolism from Noor et al. (2016) [SBML input file]
-  demo_pb_ecoli_noor_2016         - Model E. coli central carbon metabolism from Noor et al. (2016) 
-  demo_pb_ecoli_wortel_2017       - Model E. coli central carbon metabolism from Wortel et al. (2017) 
-  demo_pb_sbtab                   - Example models from the website www.parameterbalancing.net
+  * demo_parameter_balancing        - Model E. coli central carbon metabolism from Noor et al. (2016) [SBML input file]
+  * demo_pb_ecoli_noor_2016         - Model E. coli central carbon metabolism from Noor et al. (2016) 
+  * demo_pb_ecoli_wortel_2017       - Model E. coli central carbon metabolism from Wortel et al. (2017) 
+  * demo_pb_sbtab                   - Example models from the website www.parameterbalancing.net
 
 ### Configuration files
 
