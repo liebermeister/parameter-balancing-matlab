@@ -7,10 +7,10 @@ subdirectory 'mnt-advanced/mnt_parameter_balancing/'
 
 ### Convenience functions
 
-  parameter_balancing               - Simple wrapper function, takes file names as input arguments
-  parameter_balancing_sbtab         - Parameter balancing (model is read from SBtab file)
-  parameter_balancing_thermodynamic - Parameter balancing for thermodynamically feasible concentrations
-  parameter_balancing_kinetic       - Parameter balancing for kinetic constants (and possibly metabolic state)
+  * parameter_balancing               - Simple wrapper function, takes file names as input arguments
+  * parameter_balancing_sbtab         - Parameter balancing (model is read from SBtab file)
+  * parameter_balancing_thermodynamic - Parameter balancing for thermodynamically feasible concentrations
+  * parameter_balancing_kinetic       - Parameter balancing for kinetic constants (and possibly metabolic state)
 
 The calculation procedure can be customised. For a list of options, see "parameter_balancing_options.m"
 
