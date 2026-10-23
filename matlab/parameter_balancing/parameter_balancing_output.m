@@ -18,6 +18,8 @@ function [r_mode, r_mean, r_std, r_geom_mean, r_geom_std, r_orig, r_samples, r_f
 % If option "adjust_to_fluxes" is set, the resulting parameter set (constrained posterior mode)
 % is additionally adjusted to yield the predefined flux distribution (vector given in options.v)
   
+global log_text % text for the log file is added to this variable 
+
 eval(default('kinetic_data_orig','[]', 'options','struct'));
 
 r_flux_adjusted = [];
@@ -52,7 +54,7 @@ if length(kinetic_data_orig),
   if isfield(options,'Keq_given'),
     if length(options.Keq_given),
       ind_finite = find(isfinite(options.Keq_given));
-      r_orig.Keq(ind_finite) = myround(my_options.Keq_given(ind_finite));
+      r_orig.Keq(ind_finite) = myround(options.Keq_given(ind_finite));
     end
   end
 end
@@ -76,13 +78,13 @@ end
 if options.adjust_to_fluxes,
   
   v = options.v;
-  log_text = [log_text, sprintf('\n  (The balanced kcat values and enzyme levels have been adjusted to the predefined fluxes.)\n  (Assuming rate law of type "%s")',r.type)];
+  log_text = [log_text, sprintf('\n  (The balanced kcat values and enzyme levels have been adjusted to the predefined fluxes.)\n  (Assuming rate law of type "%s")',r_mode.type)];
    log_text = [log_text, '\n  (Note that weighting with standard deviations has not yet been implemented)'];
    log_text = [log_text, '\n  (Adjusted enzyme levels may be outside the allowed range)'];
-   v_pred = network_velocities(r.c,network,r);
+   v_pred = network_velocities(r_mode.c,network,r_mode);
   
    ind_wrong_direction = find(v .* v_pred < 0);
-   if ind_wrong_direction,
+   if length(ind_wrong_direction),
      network.actions(ind_wrong_direction)
      error('Flux directions do not match predefined fluxes in the above reactions'); 
    end
@@ -93,7 +95,7 @@ if options.adjust_to_fluxes,
    %% xlabel('Fluxes (predefined)');    xlabel('Fluxes (predicted from balanced steady state)');
    scaling_factors = sqrt(abs(v) ./ abs(v_pred));
    ind = isfinite(scaling_factors);
-   r_flux_adjusted = r;
+   r_flux_adjusted = r_mode;
    r_flux_adjusted_std = r_std;
    r_flux_adjusted.KV(ind)    = r_flux_adjusted.KV(ind)    .* scaling_factors(ind);
    r_flux_adjusted.Kcatf(ind) = r_flux_adjusted.Kcatf(ind) .* scaling_factors(ind);

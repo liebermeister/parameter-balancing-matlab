@@ -7,8 +7,8 @@
 % Example model: E. coli central carbon metabolism, from Noor et al. 2016 (PLoS Comp Biol)
 %
 % Input files
-%   model_file:   (SBML format)  from models/ecoli_noor_2016.xml      
-%   data_file :   (SBtab format) from models/ecoli_noor_2016_data.tsv 
+%   model_file:   (SBML format)  from models/ecoli_noor_2016/ecoli_noor_2016.xml
+%   data_file :   (SBtab format) from models/ecoli_noor_2016/ecoli_noor_2016_data.tsv
 %   prior_file:   default from subdirectory config/
 %   options_file: default from subdirectory config/
 %
@@ -29,7 +29,7 @@ pb_options = parameter_balancing_options;
 pb_options.enforce_flux_directions    = 0;
 pb_options.adjust_to_fluxes           = 0;
 pb_options.preferred_data_element_ids = 'sbml';
-% set this option to use the same settings as n the python version:
+% set this option to use the same settings as in the python version:
 % pb_options.use_python_version_defaults = 1; 
 
 % ----------------------------------------------------------------------------
@@ -69,7 +69,7 @@ balanced_parameters_sbtab = modular_rate_law_to_sbtab(network,[],struct('use_sbm
 
 pb_options = struct();
 
-v = ones(30,1); % simple example case: assume equal fluxes in all reactions
+v = ones(size(network.N,2),1); % simple example case: assume equal fluxes in all reactions
 
 [c, mu0, Keq, A, kinetic_data, r, r_mean, r_std, r_geom_mean, r_geom_std, r_orig, r_samples, network] = parameter_balancing_thermodynamic(network, v, data_file, pb_options);
 

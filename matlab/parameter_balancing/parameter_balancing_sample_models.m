@@ -15,6 +15,9 @@ for it1 = 1:length(options.ind_samples),
   it = options.ind_samples(it1);
   nn = task.network;
   kinetics                = set_cs_kinetics(nn);
+  kinetics.KM(KM_indices) = kinetics_sample.KM(:,it);
+  kinetics.KA(KA_indices) = kinetics_sample.KA(:,it);
+  kinetics.KI(KI_indices) = kinetics_sample.KI(:,it);
   if isfield(kinetics_sample,'Kcatf'),
     kcatplus                = kinetics_sample.Kcatf(:,it);
     kcatminus               = kinetics_sample.Kcatr(:,it);
@@ -25,9 +28,6 @@ for it1 = 1:length(options.ind_samples),
     kinetics.Keq            = kinetics_sample.Keq(:,it);
     kinetics.KV             = kinetics_sample.KV(:,it);
   end
-  kinetics.KM(KM_indices) = kinetics_sample.KM(:,it);
-  kinetics.KA(KA_indices) = kinetics_sample.KA(:,it);
-  kinetics.KI(KI_indices) = kinetics_sample.KI(:,it);
   if isfield(kinetics_sample,'u'),
     kinetics.u   =  kinetics_sample.u(:,it);
   end

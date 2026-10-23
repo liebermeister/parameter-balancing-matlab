@@ -5,8 +5,8 @@
 % Example model: E. coli central carbon metabolism, from Wortel et al. 2018 (PLoS Comp Biol)
 %
 % Input files
-%   model_file:   (SBML format)  from models/ecoli_wortel_2018.xml      
-%   data_file :   (SBtab format) from models/ecoli_wortel_2018_data.tsv 
+%   model_file:   (SBML format)  from models/ecoli_wortel_2018/ecoli_wortel_2018.xml
+%   data_file :   (SBtab format) from models/ecoli_wortel_2018/ecoli_wortel_2018_data.tsv
 %   prior_file:   default from subdirectory config/
 %   options_file: default from subdirectory config/
 %
@@ -32,7 +32,7 @@ pb_options.parameter_prior_file       = pb_prior_file;
 pb_options.GFE_fixed                  = 0;
 pb_options.use_pseudo_values          = 1;
 pb_options.preferred_data_element_ids = 'sbml';
-% set this option to use the same settings as n the python version:
+% set this option to use the same settings as in the python version:
 % pb_options.use_python_version_defaults = 1; 
 
 [network, r, r_orig, ~, ~, parameter_prior] = parameter_balancing_sbtab(model_file, data_file, pb_options);
