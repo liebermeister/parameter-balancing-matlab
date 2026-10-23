@@ -103,6 +103,9 @@ end
 % ------------------------------------------------------------------------
 % Load and adjust parameter prior
 
+if isempty(options.parameter_prior_filename),
+  options.parameter_prior_filename = options.parameter_prior_file;
+end
 parameter_prior = parameter_balancing_prior([],options.parameter_prior_filename);
 
 parameter_prior.LowerBound{parameter_prior.symbol_index.c}   = '0.001';
@@ -120,7 +123,7 @@ parameter_prior.PriorStd{parameter_prior.symbol_index.Keq}   = '0.05';
 % read standard chemical potentials 
 % load Gibbs free energies of formation ... this requires metabolite KEGG IDs in the model!
 
-if isstr(kinetic_data_file),
+if ischar(kinetic_data_file),
   my_data_quantities = {'standard chemical potential', 'equilibrium constant', 'concentration', 'reaction affinity'}';
   kinetic_data       = kinetic_data_load(my_data_quantities, [], network, kinetic_data_file, struct('use_sbml_ids', 0, 'use_kegg_ids', 1, 'use_python_version_defaults', options.use_python_version_defaults));
 else
@@ -177,7 +180,9 @@ end
 kinetic_data = kinetic_data_complete(kinetic_data,parameter_prior,options.use_pseudo_values,network);
 
 if options.set_water_conc_to_one,
-  display('o Setting water concentration to 1 and removing water from the stoichiometric matrix (setting its stoichiometric coefficients to 0');
+  if options.verbose,
+    display('o Setting water concentration to 1 and removing water from the stoichiometric matrix (setting its stoichiometric coefficients to 0');
+  end
   if isempty(options.ind_water),
     options.ind_water = network_find_water(network);
   end
@@ -242,7 +247,7 @@ kinetic_data = pb_kinetic_data_adjust(kinetic_data, parameter_prior, network, op
 % -----------------------------------------------------
 % Parameter balancing
 
-task   = parameter_balancing_task(network, kinetic_data, parameter_prior, model_quantities, basic_quantities, pseudo_quantities);
+task   = parameter_balancing_task(network, kinetic_data, parameter_prior, model_quantities, basic_quantities, pseudo_quantities, [], options);
 result = parameter_balancing_calculation(task, parameter_prior, join_struct(options,struct('use_pseudo_values',options.use_pseudo_values,'fix_Keq_in_sampling',options.fix_Keq_in_sampling)));
 
 
@@ -261,8 +266,10 @@ end
 % -----------------------------------------------------
 % Test output variables for consistency
 
-if norm( [sign(network.N' *[mu0 + RT * log(c)]) + sign(v)] .* double([v~=0])),
-  task.network.actions(find([sign(network.N' *[mu0 + RT * log(c)]) + sign(v)]))
+ind_inconsistent = find([sign(network.N' *[mu0 + RT * log(c)]) + sign(v)] .* double([v~=0]));
+if length(ind_inconsistent),
+  display('Reactions whose flux directions are inconsistent with the balanced thermodynamic forces:');
+  display(task.network.actions(ind_inconsistent))
   inconsistent_solution = 1;
 else
   inconsistent_solution = 0;

@@ -1,6 +1,6 @@
 function [task, prior] = parameter_balancing_task(network, kinetic_data, parameter_prior, model_quantities, basic_quantities, pseudo_quantities, include_metabolic, pb_options)
 
-% [task, prior] = parameter_balancing_task(network, kinetic_data, parameter_prior, model_quantities, basic_quantities,include_metabolic, pb_options)
+% [task, prior] = parameter_balancing_task(network, kinetic_data, parameter_prior, model_quantities, basic_quantities, pseudo_quantities, include_metabolic, pb_options)
 %
 % Prepare a parameter balancing task
 %
@@ -12,8 +12,10 @@ function [task, prior] = parameter_balancing_task(network, kinetic_data, paramet
 %   parameter_prior   (see biochemical_parameter_prior)
 %   model_quantities  list of quantities needed for the model
 %   basic_quantities  list of basic quantities to be used
+%   pseudo_quantities list of quantities for which pseudo values are used
 %   include_metabolic (flag: consider metabolic quantities? 
 %                      used only if arguments 'model_quantities' and 'basic_quantities' are not provided)
+%   pb_options        options for parameter balancing (see parameter_balancing_options)
 % 
 % For types of quantities to be used, see 'parameter_prior' structure produced by biochemical_parameter_prior
 %
@@ -64,7 +66,9 @@ function [task, prior] = parameter_balancing_task(network, kinetic_data, paramet
 %           .numbers
 %    .Q_xupper_q
 
-eval(default('kinetic_data','[]','parameter_prior','[]','model_quantities','[]', 'basic_quantities','[]','include_metabolic','0'));
+eval(default('kinetic_data','[]','parameter_prior','[]','model_quantities','[]', 'basic_quantities','[]','pseudo_quantities','{}','include_metabolic','0','pb_options','parameter_balancing_options'));
+
+if isempty(include_metabolic), include_metabolic = 0; end
 
 global log_text % text for the log file is added to this variable 
 
@@ -89,12 +93,13 @@ if length(ind_noninteger2),
 end
 
 stoich_max = 8;
-ind_large = find(abs(network.N)>stoich_max);
+ind_large  = find(abs(network.N)>stoich_max);
+ind_large2 = find(sum(abs(network.N)>stoich_max,1));
 if length(ind_large),
   if pb_options.verbose,
-  display(sprintf('  WARNING (parameter_balancing_task.m): The model contains large stoichiometric coefficients (bigger than %d).\n    These values will be automatically replaced by values of 1. This will also concern the Haldane relationships of the balanced parameters.',stoich_max));
+  display(sprintf('  WARNING (parameter_balancing_task.m): The model contains large stoichiometric coefficients (bigger than %d).\n    These values will be automatically replaced by values of 1. This will also concern the Haldane relationships of the balanced parameters in the reactions:',stoich_max));
+  display(mytable(network.actions(ind_large2),0))
   end
-  network.actions(ind_large)
   message = sprintf('\n  WARNING (parameter_balancing_task.m): The model contains large stoichiometric coefficients (bigger than %d).\n    These values will be automatically replaced by values of 1. This will also concern the Haldane relationships of the balanced parameters.',stoich_max);
   log_text = [log_text, message];
   network.N(ind_large) = sign(network.N(ind_large));

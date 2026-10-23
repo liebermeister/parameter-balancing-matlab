@@ -1,0 +1,3 @@
+!!SBtab TableID='ParameterData' TableType='Quantity' TableName='E. coli iCH360 data' StandardConcentration='1mM' SBtabVersion='1.0'
+!QuantityType	!Reaction:SBML:reaction:id	!Compound:SBML:species:id	!Mean	!Std	!Unit	!Organism	!Reaction:Identifiers:kegg.reaction	!Compound:Identifiers:kegg.compound	!Reference
+equilibrium constant	R_PGI		0.36350845		dimensionless		R02740		

@@ -75,6 +75,8 @@ switch pb_options.kcat_usage
   case 'forward',
     %% set kcat data such that forward values match the standard value
 
+    v     = pb_options.v;
+    if isempty(v), error('Option kcat_usage="forward" requires a flux vector in option "v"'); end
     ind_p = find([v>=0]+isnan(v));
     ind_m = find(v<0);
     emp   = ones(size(ind_p));

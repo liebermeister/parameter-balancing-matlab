@@ -77,7 +77,7 @@ end
 % ------------------------------------------------------------------------
 % Load and modify parameter priors
 
-parameter_prior = parameter_balancing_prior([],pb_options.parameter_prior_file,1);
+parameter_prior = parameter_balancing_prior([],pb_options.parameter_prior_file,pb_options.verbose);
 parameter_prior = pb_parameter_prior_adjust(parameter_prior, pb_options); 
 
 [model_quantities, basic_quantities, data_quantities, pseudo_quantities] = parameter_balancing_quantities(parameter_prior, network, pb_options);
@@ -88,7 +88,7 @@ parameter_prior = pb_parameter_prior_adjust(parameter_prior, pb_options);
 %   if kinetic_data is empty   : Create empty_data structure
 %   if kinetic_data is a string: Load data
 
-if isstr(kinetic_data),
+if ischar(kinetic_data),
   kinetic_data = kinetic_data_load(data_quantities, [], network, kinetic_data, struct('use_sbml_ids', pb_options.use_sbml_ids, 'use_kegg_ids', pb_options.use_kegg_ids,'use_python_version_defaults',pb_options.use_python_version_defaults));
 elseif isempty(kinetic_data),  
   kinetic_data = kinetic_data_load(data_quantities, [], network, [], struct('use_sbml_ids', 1, 'use_kegg_ids', 0, 'reaction_column_name', pb_options.reaction_column_name, 'compound_column_name', pb_options.compound_column_name,'use_python_version_defaults',pb_options.use_python_version_defaults));
@@ -106,7 +106,7 @@ kinetic_data      = pb_kinetic_data_adjust(kinetic_data, parameter_prior, networ
 
 network.kinetics  = set_kinetics(network, 'cs');
 
-task   = parameter_balancing_task(network, kinetic_data, parameter_prior, model_quantities, basic_quantities, pseudo_quantities);
+task   = parameter_balancing_task(network, kinetic_data, parameter_prior, model_quantities, basic_quantities, pseudo_quantities, [], pb_options);
 
 result = parameter_balancing_calculation(task, parameter_prior, pb_options);
 

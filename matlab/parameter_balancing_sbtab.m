@@ -33,8 +33,6 @@ eval(default('pb_options', 'struct'));
 
 pb_options = parameter_balancing_update_options(join_struct(parameter_balancing_options, pb_options));
 
-log_text = '';
-
 % ----------------------------------------------------------
 % load model
 
@@ -90,7 +88,7 @@ if pb_options.verbose,
   end
 end
 
-kinetic_data = kinetic_data_load(data_quantities, parameter_prior, network, data_file, struct('use_sbml_ids', pb_options.use_sbml_ids, 'use_kegg_ids', pb_options.use_kegg_ids, 'use_python_version_defaults', pb_options.use_python_version_defaults, 'verbose', pb_options.verbose, 'table_id','Parameter', 'enforce_ranges', pb_options.enforce_ranges));
+kinetic_data = kinetic_data_load(data_quantities, parameter_prior, network, data_file, struct('use_sbml_ids', pb_options.use_sbml_ids, 'use_kegg_ids', pb_options.use_kegg_ids, 'use_python_version_defaults', pb_options.use_python_version_defaults, 'verbose', pb_options.verbose, 'table_id', pb_options.data_table_id, 'enforce_ranges', pb_options.enforce_ranges));
 
 kinetic_data_orig = kinetic_data;
 kinetic_data      = pb_kinetic_data_adjust(kinetic_data, parameter_prior, network, pb_options);
@@ -113,14 +111,14 @@ if pb_options.fix_irreversible_reactions,
   %% for our test, we consider the data Keq values (if a value is nan, we replace it by the balanced Keq for the same reaction)
   molecularity_sums  = sum(abs(network.N),1)';
   log10_Keq          = log10(r_orig.Keq);
-  log10_Keq(~isfinite(r_orig.Keq)) = log10(r_orig.Keq(~isfinite(r_orig.Keq)));
+  ind_missing        = ~isfinite(log10_Keq);
+  log10_Keq(ind_missing) = log10(r.Keq(ind_missing));
   ind_irreversible   = find(abs(log10_Keq) ./ molecularity_sums > 5);
   if length(ind_irreversible),
     sign_irreversible  = sign(log10_Keq(ind_irreversible));
     if pb_options.verbose,
       display('parameter_balancing_sbtab: setting backward Kcat values of supposedly irreversible reactions (and forward Kcat values of supposedly irreversible reactions in reverse direction) to 0');
     end
-    network.actions(ind_irreversible);
     r.Kcatr(sign_irreversible==1)  = 0;
     r.Kcatf(sign_irreversible==-1) = 0;
   end

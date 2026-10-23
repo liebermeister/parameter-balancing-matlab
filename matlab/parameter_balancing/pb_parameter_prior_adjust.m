@@ -54,7 +54,7 @@ end
   parameter_prior.LowerBound(ll) = {num2str(options.KM_lower)};
 end
 
-if length(options.KM_lower),
+if length(options.KM_upper),
   if options.verbose, 
   display(sprintf('  Adjusting the prior: Setting KM upper bound to %2.3f', options.KM_upper));
 end

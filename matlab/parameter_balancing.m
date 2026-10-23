@@ -29,16 +29,15 @@ function [balanced_parameters_SBtab, pb_options, network, r_mode, r_orig, kineti
 % ----------------------------------------------------------------------
 % Options
   
-eval(default('data_file', '[]', 'prior_file', '[]', 'pb_options_file', '[]', 'model_name', '[]', 'pb_options','struct'));
+eval(default('output_file', '[]', 'data_file', '[]', 'prior_file', '[]', 'pb_options_file', '[]', 'model_name', '[]', 'pb_options_in','struct'));
 
 pb_options                     = parameter_balancing_options;
 pb_options.flag_check          = 0;
 pb_options.flag_minimal_output = 0;
 
-if pb_options_file,
+if ~isempty(pb_options_file),
   pb_options = join_struct(pb_options,sbtab_table_to_simple_struct(sbtab_table_load(pb_options_file),'Option','Value')); 
 end
-
 pb_options = join_struct(pb_options, pb_options_in);
 pb_options.parameter_prior_file = prior_file;
 pb_options.parametrisation      = 'all';
@@ -69,7 +68,7 @@ tic
 
 elapsed_time = toc;
 
-if length(log_text), 
+if length(log_text),
   if pb_options.verbose,
     display(sprintf(log_text))
   end
@@ -115,16 +114,16 @@ opt_output.flag_minimal_output = pb_options.flag_minimal_output;
 
 balanced_parameters_SBtab = modular_rate_law_to_sbtab(network,[],opt_output);
 
+% output_file is used as a basename for all output files; remove a ".tsv" extension if given
+if length(output_file) > 4 && strcmp(output_file(end-3:end), '.tsv'),
+  output_file = output_file(1:end-4);
+end
+
 if length(output_file),
-  if strcmp(output_file(end-3:end), '.tsv'), 
-    output_file = output_file(1:end-4);
-  end
-  
   %% save table with preprocessed data
-  preprocessed_data_SBtab = kinetic_data_save(kinetic_data, network, [output_file '_preprocessed_data.tsv'], [], pb_options.verbose);
+  kinetic_data_save(kinetic_data, network, [output_file '_preprocessed_data.tsv'], [], pb_options.verbose);
 
   %% save table with balanced parameters
-  output_file_pb_options = [output_file '_balanced_parameters.tsv'];
   sbtab_table_save(balanced_parameters_SBtab,struct('filename',[output_file '_balanced_parameters.tsv']));
   if pb_options.verbose,
     display(sprintf('\nWriting output SBtab file %s', output_file))
@@ -143,8 +142,8 @@ if pb_options.n_samples > 0,
   sampled_parameter_sets_SBtab = modular_rate_law_to_sbtab(network,[],opt_output);
   
   if length(output_file),
-    output_file_samples = [output_file(1:end-4) '_samples.tsv'];
-    sbtab_table_save(sampled_parameter_sets_SBtab,struct('filename', output_file_samples),struct('verbose',0));
+    output_file_samples = [output_file '_samples.tsv'];
+    sbtab_table_save(sampled_parameter_sets_SBtab,struct('filename', output_file_samples,'verbose',0));
     if pb_options.verbose,
       display(sprintf('\nWriting sampled parameter sets to output file %s', output_file_samples))
     end
@@ -167,7 +166,11 @@ end
 % ----------------------------------------------------------------------
 % Save result matrices (describing constraints and posterior) to file
 
-if pb_options.export_posterior_matrices, 
+if pb_options.export_posterior_matrices && isempty(output_file),
+  warning('Option "export_posterior_matrices" is ignored because no output file name is given');
+end
+
+if pb_options.export_posterior_matrices && length(output_file), 
   output_dir_matrices = [output_file '_posterior_matrices'];
   
   ind_variable_names   = task.q.names;
@@ -200,9 +203,12 @@ end
 % ----------------------------------------------------------------------
 % Write log file
 
-log_file = [output_file(1:end-4) '_log.txt'];
+if pb_options.write_log_file && isempty(output_file),
+  warning('Option "write_log_file" is ignored because no output file name is given');
+end
 
-if pb_options.write_log_file,
+if pb_options.write_log_file && length(output_file),
+  log_file = [output_file '_log.txt'];
   if pb_options.verbose,
     display(sprintf('Writing log file %s',log_file));
   end

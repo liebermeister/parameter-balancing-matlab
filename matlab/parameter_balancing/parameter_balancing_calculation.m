@@ -125,10 +125,11 @@ end
 
 if abs(max(eigenvalues) / min(eigenvalues)) > 10^15,
   log_text = [log_text, '\n  (parameter_balancing_calculation.m): Inverse posterior covariance matrix appears ill-conditioned - please check for unrealistically small error bars in your data file'];
-  max_eigenvalue = max(eigenvalues)
-  min_eigenvalue = min(eigenvalues)
-  figure(1000); plot(eigenvalues); 
-  xlabel('ordering'); ylabel('eigenvalue of inverse posterior covariance matrix'); set(gca,'YScale','Log');
+  if pb_options.verbose,
+    display(sprintf('  WARNING (parameter_balancing_calculation.m): Inverse posterior covariance matrix appears ill-conditioned (eigenvalues between %g and %g)', min(eigenvalues), max(eigenvalues)));
+    figure(1000); plot(eigenvalues); 
+    xlabel('ordering'); ylabel('eigenvalue of inverse posterior covariance matrix'); set(gca,'YScale','Log');
+  end
 end
 
 q_posterior.mean = q_posterior_cov_inv \ TT;
@@ -152,6 +153,9 @@ inconstraints_names = [ task.xlower.names(ind_in);     task.xupper.names(ind_in)
 xconstraints        = [-task.xlower.value_nat(ind_in); task.xupper.value_nat(ind_in)];
 Qconstraints        = [-task.Q_xlower_q(ind_in,:);     task.Q_xupper_q(ind_in,:)];
 
+% make the constraints a bit stricter, to ensure that solutions (even with numerical errors) will satisfy the constraints 
+epsilon = pb_options.epsilon;
+
 % --- use the constraints?
 
 use_constraints = length(task.xlower.value_nat) + length(task.xupper.value_nat) > 0;
@@ -162,10 +166,8 @@ if pb_options.ignore_all_constraints,
 end
 
 if use_constraints,
-  % make the constraints a bit stricter, to ensure that solutions (even with numerical errors) will satisfy the constraints 
-  epsilon = pb_options.epsilon;
   %% Project solution to feasible point (satisfying constraints) (using function at the bottom of this file)
-  q_posterior.mode = compute_posterior_mode_with_constraints(q_posterior.mean, q_posterior_cov_inv, Qconstraints, xconstraints, Qeqconstraints, xeqconstraints, epsilon);
+  q_posterior.mode = compute_posterior_mode_with_constraints(q_posterior.mean, q_posterior_cov_inv, Qconstraints, xconstraints, Qeqconstraints, xeqconstraints, epsilon, pb_options);
 else
   q_posterior.mode = q_posterior.mean;
 end
@@ -199,10 +201,10 @@ if pb_options.n_samples >0,
   if use_constraints,
     %% Project samples to feasible points (satisfying constraints) (using function at the bottom of this file)    
     for its = 1:pb_options.n_samples,
-      q_posterior.samples(:,its) = compute_posterior_mode_with_constraints(q_posterior.samples(:,its), q_posterior_cov_inv, Qconstraints, xconstraints, Qeqconstraints, xeqconstraints, epsilon);
+      q_posterior.samples(:,its) = compute_posterior_mode_with_constraints(q_posterior.samples(:,its), q_posterior_cov_inv, Qconstraints, xconstraints, Qeqconstraints, xeqconstraints, epsilon, pb_options);
     end
-    xmodel_posterior.samples = task.Q_xmodel_q * q_posterior.samples;
   end
+  xmodel_posterior.samples = task.Q_xmodel_q * q_posterior.samples;
 
 else
   xmodel_posterior.samples = xmodel_posterior.mode;
@@ -224,26 +226,28 @@ end
 
 if pb_options.run_variability_analysis,
   if pb_options.verbose,
-  display('- Running variability analysis');
+    display('- Running variability analysis');
   end
-  opt = optimset('Display','off');
   nq = length(task.q.names);
   nx = length(task.xmodel.names);
-  xmodel_min = [];
-  xmodel_max = [];
+  xmodel_min = nan * ones(nx,1);
+  xmodel_max = nan * ones(nx,1);
+  lb = -10^10*ones(nq,1);
+  ub =  10^10*ones(nq,1);
   for it = 1:nx,
-    [~,XM,exitflag] = linprog( task.Q_xmodel_q(it,:)', full(Qconstraints), xconstraints - epsilon,full(Qeqconstraints), xeqconstraints,-10^10*ones(nq,1),10^10*ones(nq,1),opt);
-    if exitflag ~=1, error('error in LP problem'); end 
-    xmodel_min(it,1) = XM;
-    [~,XM,exitflag] = linprog(-task.Q_xmodel_q(it,:)', full(Qconstraints), xconstraints - epsilon,full(Qeqconstraints), xeqconstraints,-10^10*ones(nq,1),10^10*ones(nq,1),opt);
-    if exitflag ~=1, error('error in LP problem'); end 
-    xmodel_max(it,1) = -XM;
-    %task.xmodel.names{it},    xmodel_min(it,1),xmodel_max(it,1)
+    xmodel_min(it,1) =  variability_lp( task.Q_xmodel_q(it,:)', full(Qconstraints), xconstraints - epsilon, full(Qeqconstraints), xeqconstraints, lb, ub);
+    xmodel_max(it,1) = -variability_lp(-task.Q_xmodel_q(it,:)', full(Qconstraints), xconstraints - epsilon, full(Qeqconstraints), xeqconstraints, lb, ub);
+  end
+  ind_failed = find(isnan(xmodel_min) | isnan(xmodel_max));
+  if length(ind_failed),
+    message = sprintf('Variability analysis: linear programming failed for %d of %d quantities (types: %s); their ranges are set to NaN', length(ind_failed), nx, strjoin(unique(task.xmodel.names(ind_failed))', ', '));
+    warning(message);
+    log_text = [log_text, '\n  ', message];
   end
 else
   if pb_options.verbose,
-  display('- Omitting variability analysis');
-end
+    display('- Omitting variability analysis');
+  end
   nx = length(task.xmodel.names);
   xmodel_min = nan * ones(nx,1);
   xmodel_max = nan * ones(nx,1);
@@ -333,6 +337,8 @@ for it = 1:length(task.model_quantities),
       dum_std    = dum; dum_std(indices)    = my_x_std;    my_x_std    = dum_std;
       dum_median = dum; dum_median(indices) = my_x_median; my_x_median = dum_median;
       dum_geom_std = dum; dum_geom_std(indices) = my_x_geom_std; my_x_geom_std = dum_geom_std;
+      dum_min    = dum; dum_min(indices)    = my_x_min;    my_x_min    = dum_min;
+      dum_max    = dum; dum_max(indices)    = my_x_max;    my_x_max    = dum_max;
       dum_samples = zeros(nr,nm,pb_options.n_samples);
       for itt=1:pb_options.n_samples,
 	my_dum_samples = sparse(zeros(nr,nm));
@@ -388,15 +394,16 @@ end
 % function for computing the posterior mode under constraints
 % -------------------------------------------------------------------------------------
 
-function q_posterior_mode = compute_posterior_mode_with_constraints(q_posterior_mean, q_posterior_cov_inv, Qconstraints, xconstraints, Qeqconstraints, xeqconstraints, epsilon)
+function q_posterior_mode = compute_posterior_mode_with_constraints(q_posterior_mean, q_posterior_cov_inv, Qconstraints, xconstraints, Qeqconstraints, xeqconstraints, epsilon, pb_options)
 
 global log_text % text for the log file is added to this variable 
 
-% check whether q_posterior_mean violates the constraints
+% check whether q_posterior_mean violates the constraints (inequality or equality constraints)
 
 ind_active_constraints = find(Qconstraints * q_posterior_mean > xconstraints - epsilon);
+ind_violated_eq        = find(abs(Qeqconstraints * q_posterior_mean - xeqconstraints) > epsilon);
 
-if length(ind_active_constraints) == 0,
+if isempty(ind_active_constraints) && isempty(ind_violated_eq),
   q_posterior_mode = q_posterior_mean;
 
 else
@@ -410,16 +417,18 @@ else
   end
 
   if exist('cplexqp','file')* [size(q_posterior_cov_inv,1)<=1000],
-    log_text = [log_text, 'Using CPLEX for quadratic optimisation'];
+    if isempty(strfind(log_text, 'Using CPLEX')),
+      log_text = [log_text, '\n  Using CPLEX for quadratic optimisation'];
+    end
     opt =  cplexoptimset('cplex');
     %opt =  cplexoptimset('Display','off');
     [q_posterior_mode,fval,exitflag] = cplexqp(full(q_posterior_cov_inv), full(-q_posterior_cov_inv * q_posterior_mean), full(Qconstraints), xconstraints - epsilon,full(Qeqconstraints), xeqconstraints,lb,ub,[],opt);
   else,
-    log_text = [log_text, 'Using Matlab quadprog for quadratic optimisation'];
-  if pb_options.verbose,
-     opt = optimset('Display','off','Algorithm','interior-point-convex','MaxIter',10^8); % 'active-set'
-  end
-  [q_posterior_mode,fval,exitflag] = quadprog(full(q_posterior_cov_inv), full(-q_posterior_cov_inv * q_posterior_mean), full(Qconstraints), xconstraints - epsilon,full(Qeqconstraints), xeqconstraints,lb,ub,[],opt);
+    if isempty(strfind(log_text, 'Using Matlab quadprog')),
+      log_text = [log_text, '\n  Using Matlab quadprog for quadratic optimisation'];
+    end
+    opt = optimset('Display','off','Algorithm','interior-point-convex','MaxIter',10^8); % 'active-set'
+    [q_posterior_mode,fval,exitflag] = quadprog(full(q_posterior_cov_inv), full(-q_posterior_cov_inv * q_posterior_mean), full(Qconstraints), xconstraints - epsilon,full(Qeqconstraints), xeqconstraints,lb,ub,[],opt);
   end
 
   if exitflag~=1,
@@ -427,7 +436,7 @@ else
     if exitflag == 0, error(sprintf('No solution found in quadratic programming (exitflag %d); increase iteration number',exitflag)); end
     if exitflag == 5, warning('Objective function around the optimum is flat; numerical result may be unreliable');  
     else,
-      warning(sprintf('Problem in quadratic programming (existflag %d); maybe constraints are too tight (for concentrations, reaction affinities etc, or flux distribution is infeasible', exitflag));  
+      warning(sprintf('Problem in quadratic programming (exitflag %d); maybe constraints are too tight (for concentrations, reaction affinities etc, or flux distribution is infeasible', exitflag));  
     end
   end
 
@@ -435,6 +444,24 @@ else
   % check_ineq = prod([Qconstraints * q_posterior_mode <= xconstraints]);
   % check_eq   = prod([Qeqconstraints * q_posterior_mode == xeqconstraints]);
   
+end
+
+% -------------------------------------------------
+
+function fval = variability_lp(f, A, b, Aeq, beq, lb, ub)
+
+% Solve one linear program of the variability analysis and return the optimal value (NaN if it fails).
+% If the default linprog algorithm throws an error (e.g. the HiGHS solver is not available
+% in some Matlab installations), the 'interior-point' algorithm is tried instead.
+
+try
+  [~,fval,exitflag] = linprog(f, A, b, Aeq, beq, lb, ub, optimset('Display','off'));
+catch
+  [~,fval,exitflag] = linprog(f, A, b, Aeq, beq, lb, ub, optimoptions('linprog','Algorithm','interior-point','Display','off'));
+end
+
+if exitflag < 1,
+  fval = nan;
 end
 
 % -------------------------------------------------
