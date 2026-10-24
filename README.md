@@ -7,8 +7,8 @@ Parameter balancing can be run in matlab or python. Data tables can be provided 
 format, models can be provided in [SBML](https://sbml.org) or [SBtab](https://www.sbtab.net) format.
 
 ### Matlab
-This repository contains the Matlab version. To run parameter balancing, adjust the demo scripts in `matlab/demo` to your model and data.
-For help, type `help Contents` in the `matlab` directory, or `help parameter_balancing` in matlab.
+This repository contains the Matlab version. To run parameter balancing, adjust the demo scripts in `parameter-balancing/demo` to your model and data.
+For help, type `help Contents` in the `parameter-balancing` directory, or `help parameter_balancing` in matlab.
 
 A minimal example:
 
@@ -28,7 +28,7 @@ The following installation instructions are only for the Matlab version.
     - [`metabolic-network-toolbox`](https://github.com/liebermeister/metabolic-network-toolbox) - metabolic network toolbox
     - [`sbtab-matlab`](https://github.com/liebermeister/sbtab-matlab) - SBtab toolbox
 - Install the Matlab interface of [libSBML](https://sbml.org/software/libsbml/) (optional - needed only if SBML model files are used)
-- Make sure that all these directories and their subdirectories, as well as the `matlab` directory of this repository (with subdirectories), are included in your Matlab path.
+- Make sure that all these directories and their subdirectories, as well as the `parameter-balancing` directory of this repository (with subdirectories), are included in your Matlab path.
 - The Matlab Optimization Toolbox is required (functions `quadprog` and `linprog`).
 - To check your installation, run `pb_run_tests` in Matlab.
 

@@ -8,7 +8,7 @@ Wolfram Liebermeister
 INSTALLATION
 
   1. Clone or unpack the files
-  2. Include the directory 'matlab' (with all subdirectories) into your Matlab path
+  2. Include the directory 'parameter-balancing' (with all subdirectories) into your Matlab path
   3. Make sure that the following toolboxes are installed and in your Matlab path:
       o Matlab utility functions   (https://github.com/liebermeister/matlab-utils)
       o Metabolic Network Toolbox  (https://github.com/liebermeister/metabolic-network-toolbox)
