@@ -160,7 +160,7 @@ end
 
 if length(output_file),
   output_file_pb_options = [output_file '_options.tsv'];
-  sbtab_table_save(options_to_sbtab(pb_options,struct('filename', output_file_pb_options,'TableName','OptionsPB','TableTitle','Options for parameter balancing','TableID','OptionsPB','Method','parameter-balancing','verbose',0)));
+  sbtab_table_save(options_to_sbtab(pb_options,struct('filename', output_file_pb_options,'TableName','Options for parameter balancing','TableID','OptionsPB','Method','parameter-balancing','verbose',0)));
   if pb_options.verbose,
     display(sprintf('Writing options to SBtab file %s', output_file_pb_options))
   end
