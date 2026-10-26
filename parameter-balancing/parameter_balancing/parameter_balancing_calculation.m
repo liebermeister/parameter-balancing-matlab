@@ -410,26 +410,16 @@ else
   lb = []; %lb = -10^15*ones(size(q_posterior_mean));
   ub = []; %ub =  10^15*ones(size(q_posterior_mean));
 
-  if exist('cplexqp','file') * [size(q_posterior_cov_inv,1)>1000],
-  if pb_options.verbose,
-    display('  (parameter_balancing_calculation.m): Problem size is too large for CPLEX community edition; using matlab quadprog function instead')
+  if strcmp(optim_solver, 'gurobi'),
+    solver_name = 'Gurobi';
+  else
+    solver_name = 'Matlab quadprog';
   end
+  if isempty(strfind(log_text, ['Using ' solver_name])),
+    log_text = [log_text, '\n  Using ' solver_name ' for quadratic optimisation'];
   end
-
-  if exist('cplexqp','file')* [size(q_posterior_cov_inv,1)<=1000],
-    if isempty(strfind(log_text, 'Using CPLEX')),
-      log_text = [log_text, '\n  Using CPLEX for quadratic optimisation'];
-    end
-    opt =  cplexoptimset('cplex');
-    %opt =  cplexoptimset('Display','off');
-    [q_posterior_mode,fval,exitflag] = cplexqp(full(q_posterior_cov_inv), full(-q_posterior_cov_inv * q_posterior_mean), full(Qconstraints), xconstraints - epsilon,full(Qeqconstraints), xeqconstraints,lb,ub,[],opt);
-  else,
-    if isempty(strfind(log_text, 'Using Matlab quadprog')),
-      log_text = [log_text, '\n  Using Matlab quadprog for quadratic optimisation'];
-    end
-    opt = optimset('Display','off','Algorithm','interior-point-convex','MaxIter',10^8); % 'active-set'
-    [q_posterior_mode,fval,exitflag] = quadprog(full(q_posterior_cov_inv), full(-q_posterior_cov_inv * q_posterior_mean), full(Qconstraints), xconstraints - epsilon,full(Qeqconstraints), xeqconstraints,lb,ub,[],opt);
-  end
+  opt = optimset('Display','off','Algorithm','interior-point-convex','MaxIter',10^8); % 'active-set'
+  [q_posterior_mode,fval,exitflag] = qp_solve(full(q_posterior_cov_inv), full(-q_posterior_cov_inv * q_posterior_mean), full(Qconstraints), xconstraints - epsilon,full(Qeqconstraints), xeqconstraints,lb,ub,[],opt);
 
   if exitflag~=1,
     if exitflag < 0,  error(sprintf('Error in optimisation during parameter balancing - exitflag %d',exitflag)); end
