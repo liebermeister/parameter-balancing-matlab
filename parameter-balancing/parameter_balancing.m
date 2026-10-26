@@ -36,7 +36,11 @@ pb_options.flag_check          = 0;
 pb_options.flag_minimal_output = 0;
 
 if ~isempty(pb_options_file),
-  pb_options = join_struct(pb_options,sbtab_table_to_simple_struct(sbtab_table_load(pb_options_file),'Option','Value')); 
+  pb_options_table = sbtab_table_load(pb_options_file);
+  % option names in column !ID (in older files: !Option)
+  option_column = 'ID';
+  if ~sbtab_table_has_column(pb_options_table,'ID'), option_column = 'Option'; end
+  pb_options = join_struct(pb_options,sbtab_table_to_simple_struct(pb_options_table,option_column,'Value'));
 end
 pb_options = join_struct(pb_options, pb_options_in);
 pb_options.parameter_prior_file = prior_file;
