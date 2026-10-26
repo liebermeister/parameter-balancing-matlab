@@ -158,7 +158,7 @@ end
 if isfield(network,'graphics_par'),
   x = network.graphics_par.x(1,:)';
   y = network.graphics_par.x(2,:)';
-  position_table = sbtab_table_construct(struct('TableName','Position', 'TableType','Position','TableID','Position'),{'Element','PositionX','PositionY'},{[network.metabolites; network.actions],x,y});
+  position_table = sbtab_table_construct(struct('TableName','Position', 'TableType','Position','TableID','Position'),{'Element','Position:x','Position:y'},{[network.metabolites; network.actions],x,y});
   if isfield(network.graphics_par,'metinvisible'),
     position_table = sbtab_table_add_column(position_table,'IsInvisible',[column(network.graphics_par.metinvisible); column(network.graphics_par.actinvisible)],1);
   end

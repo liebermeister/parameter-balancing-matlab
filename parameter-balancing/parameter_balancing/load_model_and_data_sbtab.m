@@ -112,9 +112,20 @@ try
     warnings = [warnings, '; Enzyme cost weight table missing'];
 end
 
-try
+% position table: table 'Position', or otherwise the first table of type 'Position' (e.g. TableName 'Layout')
+if isfield(my_sbtab_model.tables,'Position'),
   positions = my_sbtab_model.tables.Position;
-catch err
+else
+  table_names = fieldnames(my_sbtab_model.tables);
+  for it = 1:length(table_names),
+    my_attributes = my_sbtab_model.tables.(table_names{it}).attributes;
+    if isfield(my_attributes,'TableType') && strcmp(my_attributes.TableType,'Position'),
+      positions = my_sbtab_model.tables.(table_names{it});
+      break
+    end
+  end
+end
+if isempty(positions),
   warnings = [warnings, '; Position table missing'];
 end
 
