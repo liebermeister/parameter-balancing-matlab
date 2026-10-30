@@ -34,6 +34,10 @@ The following installation instructions are only for the Matlab version.
 
 The code was tested with Matlab R2025b on Linux.
 
+## Versions
+
+To see the installed version, type `parameter_balancing_version`. Older versions can be downloaded from the [releases page](https://github.com/liebermeister/parameter-balancing-matlab/releases) of this repository, and changes between versions are listed in `CHANGELOG.md`.
+
 ## License
 This package is released under the [GNU General Public License](LICENSE).
 
