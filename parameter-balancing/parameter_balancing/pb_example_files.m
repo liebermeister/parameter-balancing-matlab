@@ -43,5 +43,5 @@ switch test_example,
     error(sprintf('Unknown example model "%s"', test_example));
 end
 
-prior_file  = [ get_pb_directory '/config/pb_prior.tsv'];
+prior_file  = mnt_prior_file;
 config_file = [ get_pb_directory '/config/pb_options.tsv'];

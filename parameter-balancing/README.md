@@ -26,7 +26,7 @@ The calculation procedure can be customised. For a list of options, see `paramet
 
 ### Configuration files
 
-Default configuration files with standard parameters for parameter balancing (`pb_prior.tsv` and `pb_options.tsv`) can be found in the `config` directory.
+The default options for parameter balancing (`pb_options.tsv`) can be found in the `config` directory. The default prior table is part of the Metabolic Network Toolbox (see `mnt_prior_file`).
 
 ### Example models
 

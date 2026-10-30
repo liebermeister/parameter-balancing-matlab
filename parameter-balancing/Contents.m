@@ -25,7 +25,8 @@
 %
 % Configuration files
 %
-%   Default configuration files (pb_prior.tsv and pb_options.tsv) can be found in the "config" directory.
+%   The default options file (pb_options.tsv) can be found in the "config" directory.
+%   The default prior table is part of the Metabolic Network Toolbox (see mnt_prior_file).
 %
 % Example models
 %

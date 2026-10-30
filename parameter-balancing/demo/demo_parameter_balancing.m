@@ -16,7 +16,7 @@
 model_name   = 'E. coli central metabolism, Noor et al (2016)';
 model_file   = [pb_DIR '/models/ecoli_noor_2016/ecoli_noor_2016.xml'];
 data_file    = [pb_DIR '/models/ecoli_noor_2016/ecoli_noor_2016_data.tsv'];
-prior_file   = [pb_DIR '/config/pb_prior.tsv'];
+prior_file   = mnt_prior_file;
 options_file = [pb_DIR '/config/pb_options.tsv'];
 output_file  = [tempdir 'demo_pb_ecoli_noor_2016.tsv'];
 
