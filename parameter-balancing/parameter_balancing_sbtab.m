@@ -29,6 +29,10 @@ function [network, r, r_orig, kinetic_data, r_samples, parameter_prior, r_mean, 
 %
 % This function calls the functions 'parameter_balancing_task', 'parameter_balancing', and 'parameter_balancing_output'
 
+if exist('dependencies_check_once','file')
+  dependencies_check_once('parameter_balancing_dependencies');
+end
+
 eval(default('pb_options', 'struct'));
 
 pb_options = parameter_balancing_update_options(join_struct(parameter_balancing_options, pb_options));
