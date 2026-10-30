@@ -61,6 +61,10 @@ function [r, r_orig, kinetic_data, r_samples, parameter_prior, r_mean, r_std,r_g
 % ------------------------------------------------------------------------
 % Initialise some variables
 
+if exist('dependencies_check_once','file')
+  dependencies_check_once('parameter_balancing_dependencies');
+end
+
 eval(default('kinetic_data', '[]', 'pb_options', 'struct'));
 
 pb_options = parameter_balancing_update_options(join_struct(parameter_balancing_options,pb_options));

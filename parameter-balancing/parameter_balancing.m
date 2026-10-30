@@ -29,6 +29,10 @@ function [balanced_parameters_SBtab, pb_options, network, r_mode, r_orig, kineti
 % ----------------------------------------------------------------------
 % Options
   
+if exist('dependencies_check_once','file')
+  dependencies_check_once('parameter_balancing_dependencies');
+end
+
 eval(default('output_file', '[]', 'data_file', '[]', 'prior_file', '[]', 'pb_options_file', '[]', 'model_name', '[]', 'pb_options_in','struct'));
 
 pb_options                     = parameter_balancing_options;

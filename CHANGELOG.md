@@ -10,5 +10,6 @@ First numbered version.
 - Example models in one subfolder per model; iCH360 model added
 - SBtab 1.1 options and position tables
 - `parameter_balancing_prior` and the prior table moved to the Metabolic Network Toolbox (`config/pb_prior.tsv` is now `mnt_prior.tsv`; see `mnt_prior_file`)
+- The main functions check the dependencies automatically, once per Matlab session
 
 The state before the cleanup of October 2026 is available under the git tag `v0.9-legacy`.

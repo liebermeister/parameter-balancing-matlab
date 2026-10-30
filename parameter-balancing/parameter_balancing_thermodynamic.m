@@ -25,6 +25,10 @@ function [c, mu0, Keq, A, kinetic_data, r, r_mean, r_std, r_geom_mean, r_geom_st
 %
 % kinetic_data: data and assumptions finally used in the optimisation task
 
+if exist('dependencies_check_once','file')
+  dependencies_check_once('parameter_balancing_dependencies');
+end
+
 [nm,nr] = size(network.N);
 
 eval(default('options','struct'));
