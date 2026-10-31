@@ -21,7 +21,7 @@ function [balanced_parameters_SBtab, pb_options, network, r_mode, r_orig, kineti
 % model_name:     (optional) Model name 
 % pb_options_in:  (optional) Matlab struct with options, overriding options given in [pb_options_file]
 % 
-% For a usage example, see demo_parameter_balancing.m
+% For a usage example, see demo_pb.m
 %
 % Optional arguments can be left empty ('[]')
 
