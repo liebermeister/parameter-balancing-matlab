@@ -50,7 +50,7 @@ pb_options.preferred_data_element_ids = 'sbml';
 % [r, r_orig, ~, ~, parameter_prior] = parameter_balancing_kinetic(network, kinetic_data, pb_options);
 %----------------------------------------------------- 
 
-parameter_balancing_check(r, r_orig, network, parameter_prior,1,1)
+pb_check(r, r_orig, network, parameter_prior,1,1)
 
 
 % ----------------------------------------------------------------------------

@@ -1,6 +1,6 @@
-function parameter_balancing_kinetic_data_show(kinetic_data)
+function pb_kinetic_data_show(kinetic_data)
 
-% parameter_balancing_kinetic_data_show(kinetic_data)
+% pb_kinetic_data_show(kinetic_data)
 
 fn = fieldnames(kinetic_data);
 

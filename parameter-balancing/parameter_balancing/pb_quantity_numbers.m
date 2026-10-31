@@ -1,4 +1,4 @@
-function num = parameter_balancing_quantity_numbers(quantities,parameter_prior,network)
+function num = pb_quantity_numbers(quantities,parameter_prior,network)
 
 % count how many quantities of a certain type appear in a model
 

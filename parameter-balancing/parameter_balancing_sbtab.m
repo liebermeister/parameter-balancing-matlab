@@ -27,7 +27,7 @@ function [network, r, r_orig, kinetic_data, r_samples, parameter_prior, r_mean, 
 % With default options, the function uses the information from input files; 
 % Set the option 'pb_options.use_python_version_defaults=1' for a direct comparison to the python parameter balancing tool
 %
-% This function calls the functions 'parameter_balancing_task', 'parameter_balancing', and 'parameter_balancing_output'
+% This function calls the functions 'pb_task', 'parameter_balancing', and 'pb_output'
 
 if exist('dependencies_check_once','file')
   dependencies_check_once('parameter_balancing_dependencies');
@@ -35,7 +35,7 @@ end
 
 eval(default('pb_options', 'struct'));
 
-pb_options = parameter_balancing_update_options(join_struct(parameter_balancing_options, pb_options));
+pb_options = pb_update_options(join_struct(parameter_balancing_options, pb_options));
 
 % ----------------------------------------------------------
 % load model
@@ -75,7 +75,7 @@ end
 parameter_prior = parameter_balancing_prior([],pb_options.parameter_prior_file, pb_options.verbose); 
 parameter_prior = pb_parameter_prior_adjust(parameter_prior, pb_options); 
 
-[model_quantities, basic_quantities, data_quantities, pseudo_quantities] = parameter_balancing_quantities(parameter_prior, network, pb_options);
+[model_quantities, basic_quantities, data_quantities, pseudo_quantities] = pb_quantities(parameter_prior, network, pb_options);
 
 % ----------------------------------------------------------
 % load kinetic data
@@ -98,16 +98,16 @@ kinetic_data_orig = kinetic_data;
 kinetic_data      = pb_kinetic_data_adjust(kinetic_data, parameter_prior, network, pb_options);
 
 % Display the adjusted data
-% parameter_balancing_kinetic_data_show(kinetic_data);
+% pb_kinetic_data_show(kinetic_data);
 
 % -----------------------------------------------------------
 % Run parameter balancing
 
-task = parameter_balancing_task(network, kinetic_data, parameter_prior, model_quantities, basic_quantities, pseudo_quantities,[],pb_options);
+task = pb_task(network, kinetic_data, parameter_prior, model_quantities, basic_quantities, pseudo_quantities,[],pb_options);
 
-result = parameter_balancing_calculation(task, parameter_prior, pb_options);
+result = pb_calculation(task, parameter_prior, pb_options);
 
-[r, r_mean, r_std, r_geom_mean, r_geom_std, r_orig, r_samples, ~, ~, r_min, r_max] = parameter_balancing_output(result, kinetic_data_orig, pb_options, network);
+[r, r_mean, r_std, r_geom_mean, r_geom_std, r_orig, r_samples, ~, ~, r_min, r_max] = pb_output(result, kinetic_data_orig, pb_options, network);
 
 if pb_options.fix_irreversible_reactions,
   %% irreversible reactions are reactions whose log10 Keq value, divided by 

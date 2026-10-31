@@ -37,7 +37,7 @@ pb_options.preferred_data_element_ids = 'sbml';
 
 [network, r, r_orig, ~, ~, parameter_prior] = parameter_balancing_sbtab(model_file, data_file, pb_options);
 
-parameter_balancing_check(r, r_orig, network, parameter_prior)
+pb_check(r, r_orig, network, parameter_prior)
 
 
 % ----------------------------------------------------------------------------

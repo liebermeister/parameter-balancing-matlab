@@ -67,7 +67,7 @@ end
 
 eval(default('kinetic_data', '[]', 'pb_options', 'struct'));
 
-pb_options = parameter_balancing_update_options(join_struct(parameter_balancing_options,pb_options));
+pb_options = pb_update_options(join_struct(parameter_balancing_options,pb_options));
 
 [nm,nr] = size(network.N);
 
@@ -84,7 +84,7 @@ end
 parameter_prior = parameter_balancing_prior([],pb_options.parameter_prior_file,pb_options.verbose);
 parameter_prior = pb_parameter_prior_adjust(parameter_prior, pb_options); 
 
-[model_quantities, basic_quantities, data_quantities, pseudo_quantities] = parameter_balancing_quantities(parameter_prior, network, pb_options);
+[model_quantities, basic_quantities, data_quantities, pseudo_quantities] = pb_quantities(parameter_prior, network, pb_options);
 
 
 % ----------------------------------------------------------------
@@ -110,8 +110,8 @@ kinetic_data      = pb_kinetic_data_adjust(kinetic_data, parameter_prior, networ
 
 network.kinetics  = set_kinetics(network, 'cs');
 
-task   = parameter_balancing_task(network, kinetic_data, parameter_prior, model_quantities, basic_quantities, pseudo_quantities, [], pb_options);
+task   = pb_task(network, kinetic_data, parameter_prior, model_quantities, basic_quantities, pseudo_quantities, [], pb_options);
 
-result = parameter_balancing_calculation(task, parameter_prior, pb_options);
+result = pb_calculation(task, parameter_prior, pb_options);
 
-[r,r_mean,r_std,r_geom_mean,r_geom_std,r_orig,r_samples] = parameter_balancing_output(result, kinetic_data_orig, pb_options, network);
+[r,r_mean,r_std,r_geom_mean,r_geom_std,r_orig,r_samples] = pb_output(result, kinetic_data_orig, pb_options, network);

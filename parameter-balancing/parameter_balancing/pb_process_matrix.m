@@ -1,4 +1,4 @@
-function result = parameter_balancing_process_matrix(parameter_prior)
+function result = pb_process_matrix(parameter_prior)
 
 % process the formulae
 ind_indep_quantities = find(strcmp(parameter_prior.Dependence,'Basic'));

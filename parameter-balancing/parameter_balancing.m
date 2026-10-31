@@ -90,7 +90,7 @@ if pb_options.flag_check,
 
   show_concentrations = pb_options.include_metabolic;
   show_dmu0 = 0;
-  parameter_balancing_check(network.kinetics, r_orig, network, parameter_prior, 1, show_concentrations, show_dmu0)
+  pb_check(network.kinetics, r_orig, network, parameter_prior, 1, show_concentrations, show_dmu0)
 
   %% --------------------
   %% check for violated haldane relationships

@@ -1,4 +1,4 @@
-function [model_quantities, basic_quantities, data_quantities, pseudo_quantities] = parameter_balancing_quantities(parameter_prior,network,options)
+function [model_quantities, basic_quantities, data_quantities, pseudo_quantities] = pb_quantities(parameter_prior,network,options)
 
 % [model_quantities, basic_quantities, data_quantities, pseudo_quantities] = parameter_balancing_relevant_quantities(parameter_prior,network,options)
 % 

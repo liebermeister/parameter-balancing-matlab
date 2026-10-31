@@ -44,11 +44,11 @@ pb_options.v = v;
 
 options = join_struct(pb_options,options);
 
-options = parameter_balancing_update_options(options);
+options = pb_update_options(options);
 
 % ------------------------------------------------------------------------
 % Lists of quantities considered
-% (function 'parameter_balancing_quantities' can be used instead)
+% (function 'pb_quantities' can be used instead)
 
 basic_quantities  = {'standard chemical potential','concentration'}';
 
@@ -251,8 +251,8 @@ kinetic_data = pb_kinetic_data_adjust(kinetic_data, parameter_prior, network, op
 % -----------------------------------------------------
 % Parameter balancing
 
-task   = parameter_balancing_task(network, kinetic_data, parameter_prior, model_quantities, basic_quantities, pseudo_quantities, [], options);
-result = parameter_balancing_calculation(task, parameter_prior, join_struct(options,struct('use_pseudo_values',options.use_pseudo_values,'fix_Keq_in_sampling',options.fix_Keq_in_sampling)));
+task   = pb_task(network, kinetic_data, parameter_prior, model_quantities, basic_quantities, pseudo_quantities, [], options);
+result = pb_calculation(task, parameter_prior, join_struct(options,struct('use_pseudo_values',options.use_pseudo_values,'fix_Keq_in_sampling',options.fix_Keq_in_sampling)));
 
 
 % -----------------------------------------------------
@@ -301,6 +301,6 @@ end
 % ---------------------------------------------------------
 
 if nargout > 5,
-  [r,r_mean,r_std,r_geom_mean,r_geom_std,r_orig,r_samples]  = parameter_balancing_output(result,kinetic_data_orig,options,network);
+  [r,r_mean,r_std,r_geom_mean,r_geom_std,r_orig,r_samples]  = pb_output(result,kinetic_data_orig,options,network);
   network.kinetics      = r; 
 end

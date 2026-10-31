@@ -1,4 +1,4 @@
-function [v, kinetics_list] = parameter_balancing_sample_models(task,kinetics_sample,options)
+function [v, kinetics_list] = pb_sample_models(task,kinetics_sample,options)
 
 eval(default('options','struct'));
 options_default = struct('compute_v',1,'construct_models','1','ind_samples',[],'n_sample',[]);

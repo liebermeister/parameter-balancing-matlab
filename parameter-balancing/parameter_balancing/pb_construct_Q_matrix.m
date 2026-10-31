@@ -1,18 +1,18 @@
-function Q = parameter_balancing_construct_Q_matrix(quantities, basic_quantities, parameter_prior, network)
+function Q = pb_construct_Q_matrix(quantities, basic_quantities, parameter_prior, network)
 
-% Q = parameter_balancing_construct_Q_matrix(quantities, basic_quantities, parameter_prior, network)
+% Q = pb_construct_Q_matrix(quantities, basic_quantities, parameter_prior, network)
 
-result = parameter_balancing_process_matrix(parameter_prior);
+result = pb_process_matrix(parameter_prior);
 
 i1   = label_names(quantities,result.all_quantities);
 i2   = label_names(basic_quantities,result.all_basic_quantities);
 
-num1 = parameter_balancing_quantity_numbers(quantities,parameter_prior,network);
-num2 = parameter_balancing_quantity_numbers(basic_quantities,parameter_prior,network);
+num1 = pb_quantity_numbers(quantities,parameter_prior,network);
+num2 = pb_quantity_numbers(basic_quantities,parameter_prior,network);
 
 my_matrix_terms = result.matrix_terms(i1,i2);
 
-model_matrices = parameter_balancing_model_matrices(network);
+model_matrices = pb_model_matrices(network);
 
 Nt         = model_matrices.Nt  ;
 I_species  = model_matrices.I_species ;

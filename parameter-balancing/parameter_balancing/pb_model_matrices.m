@@ -1,4 +1,4 @@
-function model_matrices = parameter_balancing_model_matrices(network)
+function model_matrices = pb_model_matrices(network)
 
 [nr,nm,nx,KM_indices,KA_indices,KI_indices,nKM,nKA,nKI] = network_numbers(network);
 

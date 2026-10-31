@@ -1,4 +1,4 @@
-function parameter_balancing_graphics1(task,res)
+function pb_graphics1(task,res)
 
 figure(1); clf
 subplot(2,1,1); plot(task.q.prior.mean,'c'); hold on; plot(res.q_posterior.mean,'b--'); ylabel('Mean'); title('Basic quantities')
