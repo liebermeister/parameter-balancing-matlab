@@ -1,4 +1,4 @@
-!!!SBtab DocumentName='pbalancing' SBtabVersion='1.2' Date='2022-3-31',,,,,,,,,
+!!!SBtab DocumentName='pbalancing' SBtabVersion='1.1' Date='2022-3-31',,,,,,,,,
 !!SBtab TableName='Parameter balancing configuration table' TableType='Config' TableID='ConfigurePB',,,,,,,,,
 !ID,!Value,,,,,,,,
 use_pseudo_values,True,,,,,,,,
