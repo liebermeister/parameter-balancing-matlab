@@ -13,7 +13,7 @@
 %
 % Demo scripts (directory "demo")
 %
-%   demo_parameter_balancing        - Model E. coli central carbon metabolism from Noor et al. (2016) [SBML input file]
+%   demo_pb                         - Model E. coli central carbon metabolism from Noor et al. (2016) [SBML input file]
 %   demo_pb_ecoli_noor_2016         - Model E. coli central carbon metabolism from Noor et al. (2016)
 %   demo_pb_ecoli_wortel_2018       - Model E. coli central carbon metabolism from Wortel et al. (2018)
 %   demo_pb_sbtab                   - Example models from the website www.parameterbalancing.net

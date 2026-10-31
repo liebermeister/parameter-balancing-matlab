@@ -1,6 +1,6 @@
-function [q_sample, xmodel_sample, xdata_sample, kinetics_sample, v_sample, q_min, q_max] = parameter_balancing_constrained_sampling(task,res,options,parameter_prior)
+function [q_sample, xmodel_sample, xdata_sample, kinetics_sample, v_sample, q_min, q_max] = pb_constrained_sampling(task,res,options,parameter_prior)
 
-% [q_sample, xmodel_sample, xdata_sample, kinetics_sample, v_sample, q_min, q_max] = parameter_balancing_constrained_sampling(task,res,options,parameter_prior)
+% [q_sample, xmodel_sample, xdata_sample, kinetics_sample, v_sample, q_min, q_max] = pb_constrained_sampling(task,res,options,parameter_prior)
 
 eval(default('options','struct','parameter_prior',' biochemical_parameter_prior'));
 
@@ -104,7 +104,7 @@ xdata_sample  = task.Q_xdata_q  * q_sample;
 
 [nr,nm,nx,ind_KM,ind_KA,ind_KI,nKM,nKA,nKI] = network_numbers(task.network);
 
-num_model = parameter_balancing_quantity_numbers(task.model_quantities,parameter_prior,task.network);
+num_model = pb_quantity_numbers(task.model_quantities,parameter_prior,task.network);
 
 for it = 1:length(task.model_quantities),
   my_quantity     = task.model_quantities{it};
@@ -142,7 +142,7 @@ end
 if options.compute_reaction_velocities,
   my_kinetics = task.network.kinetics;
   if strcmp('cs',my_kinetics.type),
-    [v_sample] = parameter_balancing_sample_models(task,kinetics_sample,struct('sample_models','0'));
+    [v_sample] = pb_sample_models(task,kinetics_sample,struct('sample_models','0'));
   else
     error('Kinetics not supported');
   end

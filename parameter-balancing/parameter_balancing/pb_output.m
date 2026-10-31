@@ -1,6 +1,6 @@
-function [r_mode, r_mean, r_std, r_geom_mean, r_geom_std, r_orig, r_samples, r_flux_adjusted, r_flux_adjusted_std, r_min, r_max]  = parameter_balancing_output(res, kinetic_data_orig, options, network)
+function [r_mode, r_mean, r_std, r_geom_mean, r_geom_std, r_orig, r_samples, r_flux_adjusted, r_flux_adjusted_std, r_min, r_max]  = pb_output(res, kinetic_data_orig, options, network)
   
-% [r_mode, r_mean, r_std, r_geom_mean, r_geom_std, r_orig, r_samples, r_flux_adjusted, r_flux_adjusted_std]  = parameter_balancing_output(res,kinetic_data_orig,options)
+% [r_mode, r_mean, r_std, r_geom_mean, r_geom_std, r_orig, r_samples, r_flux_adjusted, r_flux_adjusted_std]  = pb_output(res,kinetic_data_orig,options)
 %
 % Convert parameter sets, previously obtained by parameter balancing, into the format 
 % used to describe kinetic parameters in the Metabolic Network Toolbox.

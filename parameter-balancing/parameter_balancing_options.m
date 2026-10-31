@@ -18,7 +18,7 @@ function options = parameter_balancing_options()
 %   options.include_enzyme_conc          = 0;                         flag: consider enzyme concentrations in parameter balancing
 %   options.enzymes_explicit             = 1;                         flag: disregard maximal velocities in parameter balancing
 %   options.enforce_flux_directions      = 0;                         flag: set constraints to realise predefined flux directions
-%   options.adjust_to_fluxes             = 0;                         flag: apply postprocessing to yield predefined fluxes (see parameter_balancing_output)
+%   options.adjust_to_fluxes             = 0;                         flag: apply postprocessing to yield predefined fluxes (see pb_output)
 %   options.v                            = [];                        flux vector used by options "enforce_flux_directions" and "adjust_to_fluxes"
 %   options.ignore_all_constraints       = 0;                         flag: run parameter balancing without constraints
 %   options.n_samples                    = 0;                         0: no sampling; n>1: generate n sampled parameter sets
@@ -50,7 +50,7 @@ function options = parameter_balancing_options()
 %   options.kcatr_lower           = [];  1/s   reverse kcat value default lower bound
 %   options.kcat_upper            = [];  1/s   kcat value default upper bound
 %
-%   options.epsilon               = 10^-4; epsilon value for slightly stricter constraints (see parameter_balancing_calculation.m)
+%   options.epsilon               = 10^-4; epsilon value for slightly stricter constraints (see pb_calculation.m)
 %                                             
 % Options for wrapper functions             
 %

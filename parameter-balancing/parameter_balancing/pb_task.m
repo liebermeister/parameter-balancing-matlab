@@ -1,6 +1,6 @@
-function [task, prior] = parameter_balancing_task(network, kinetic_data, parameter_prior, model_quantities, basic_quantities, pseudo_quantities, include_metabolic, pb_options)
+function [task, prior] = pb_task(network, kinetic_data, parameter_prior, model_quantities, basic_quantities, pseudo_quantities, include_metabolic, pb_options)
 
-% [task, prior] = parameter_balancing_task(network, kinetic_data, parameter_prior, model_quantities, basic_quantities, pseudo_quantities, include_metabolic, pb_options)
+% [task, prior] = pb_task(network, kinetic_data, parameter_prior, model_quantities, basic_quantities, pseudo_quantities, include_metabolic, pb_options)
 %
 % Prepare a parameter balancing task
 %
@@ -84,10 +84,10 @@ ind_noninteger2 = find(sum(network.N ~= ceil(network.N),1));
 
 if length(ind_noninteger2),
   if pb_options.verbose,
-    display(sprintf('  WARNING (parameter_balancing_task.m): The model contains non-integer stoichiometric coefficients.\n    These values will be replaced by values of 1. The Haldane relationships of the balanced parameters will not be exactly satisfied in the reactions:'));
+    display(sprintf('  WARNING (pb_task.m): The model contains non-integer stoichiometric coefficients.\n    These values will be replaced by values of 1. The Haldane relationships of the balanced parameters will not be exactly satisfied in the reactions:'));
     display(mytable(network.actions(ind_noninteger2)))
   end
-  message = sprintf('\n  WARNING (parameter_balancing_task.m): The model contains non-integer stoichiometric coefficients.\n    These values will be automatically replaced by values of 1. This will also concern the Haldane relationships of the balanced parameters.');
+  message = sprintf('\n  WARNING (pb_task.m): The model contains non-integer stoichiometric coefficients.\n    These values will be automatically replaced by values of 1. This will also concern the Haldane relationships of the balanced parameters.');
   log_text = [log_text, message];
   network.N(ind_noninteger) = sign(network.N(ind_noninteger));
 end
@@ -97,10 +97,10 @@ ind_large  = find(abs(network.N)>stoich_max);
 ind_large2 = find(sum(abs(network.N)>stoich_max,1));
 if length(ind_large),
   if pb_options.verbose,
-  display(sprintf('  WARNING (parameter_balancing_task.m): The model contains large stoichiometric coefficients (bigger than %d).\n    These values will be automatically replaced by values of 1. This will also concern the Haldane relationships of the balanced parameters in the reactions:',stoich_max));
+  display(sprintf('  WARNING (pb_task.m): The model contains large stoichiometric coefficients (bigger than %d).\n    These values will be automatically replaced by values of 1. This will also concern the Haldane relationships of the balanced parameters in the reactions:',stoich_max));
   display(mytable(network.actions(ind_large2),0))
   end
-  message = sprintf('\n  WARNING (parameter_balancing_task.m): The model contains large stoichiometric coefficients (bigger than %d).\n    These values will be automatically replaced by values of 1. This will also concern the Haldane relationships of the balanced parameters.',stoich_max);
+  message = sprintf('\n  WARNING (pb_task.m): The model contains large stoichiometric coefficients (bigger than %d).\n    These values will be automatically replaced by values of 1. This will also concern the Haldane relationships of the balanced parameters.',stoich_max);
   log_text = [log_text, message];
   network.N(ind_large) = sign(network.N(ind_large));
 end
@@ -108,9 +108,9 @@ end
 reactant_numbers = sum(network.N~=0, 1);
 if max(reactant_numbers)>6,
   if pb_options.verbose,
-  display(sprintf('  WARNING (parameter_balancing_task.m): Some reactions contain more than 6 reactants:'));
+  display(sprintf('  WARNING (pb_task.m): Some reactions contain more than 6 reactants:'));
   end
-  message = sprintf('\n  WARNING (parameter_balancing_task.m): Some reactions contain more than 6 reactants:');
+  message = sprintf('\n  WARNING (pb_task.m): Some reactions contain more than 6 reactants:');
   log_text = [log_text, message];
   ind_problematic = find(reactant_numbers>6);
   if pb_options.verbose,
@@ -121,9 +121,9 @@ end
 ind_no_substrates = find(sum(network.N<0) ==0);
 if length(ind_no_substrates),
   if pb_options.verbose,
-  display('  WARNING (parameter_balancing_task.m): Some reactions have no reaction substrates:');
+  display('  WARNING (pb_task.m): Some reactions have no reaction substrates:');
   end
-  message = '  WARNING (parameter_balancing_task.m): Some reactions have no reaction substrates:';
+  message = '  WARNING (pb_task.m): Some reactions have no reaction substrates:';
   log_text = [log_text, message];
   if pb_options.verbose,
   display(mytable(network.actions(ind_no_substrates),0))
@@ -133,9 +133,9 @@ end
 ind_no_products   = find(sum(network.N>0) ==0);
 if length(ind_no_products),
   if pb_options.verbose,
-  display('  WARNING (parameter_balancing_task.m): Some reactions have no reaction products:');
+  display('  WARNING (pb_task.m): Some reactions have no reaction products:');
   end
-  message = '  WARNING (parameter_balancing_task.m): Some reactions have no reaction products:';
+  message = '  WARNING (pb_task.m): Some reactions have no reaction products:';
   log_text = [log_text, message];
   if pb_options.verbose,
   display(mytable(network.actions(ind_no_products),0))
@@ -157,7 +157,7 @@ prior = [];
 [nr,nm,nx,ind_KM,ind_KA,ind_KI,nKM,nKA,nKI] = network_numbers(network);
 
 if isempty(model_quantities),
-  [model_quantities, basic_quantities] = parameter_balancing_quantities(parameter_prior, ...
+  [model_quantities, basic_quantities] = pb_quantities(parameter_prior, ...
      network, struct('include_metabolic',include_metabolic,'enzyme_explicit',0)); 
 end
 
@@ -183,7 +183,7 @@ task.q.prior.std      = [];
 % -------------------------------------------------------------
 % build description of basic quantities
 
-num_basic = parameter_balancing_quantity_numbers(basic_quantities,parameter_prior,network);
+num_basic = pb_quantity_numbers(basic_quantities,parameter_prior,network);
 
 for it = 1:length(basic_quantities),
 
@@ -241,7 +241,7 @@ task.xmodel.indices  = struct;
 
 [nr,nm,nx,ind_KM,ind_KA,ind_KI,nKM,nKA,nKI] = network_numbers(network);
 
-num_model = parameter_balancing_quantity_numbers(model_quantities,parameter_prior,network);
+num_model = pb_quantity_numbers(model_quantities,parameter_prior,network);
 
 for it = 1:length(model_quantities),
   my_quantity     = model_quantities{it};
@@ -256,7 +256,7 @@ end
 
 task.xmodel.numbers = num_model;
 
-Q_model = parameter_balancing_construct_Q_matrix(model_quantities, basic_quantities, parameter_prior, network);
+Q_model = pb_construct_Q_matrix(model_quantities, basic_quantities, parameter_prior, network);
 
 task.Q_xmodel_q = Q_model;
 
@@ -266,7 +266,7 @@ task.Q_xmodel_q = Q_model;
 % (for pseudo values and general constraints)
 
 all_quantities = unique([model_quantities; basic_quantities; data_quantities]);
-num_all        = parameter_balancing_quantity_numbers(all_quantities,parameter_prior,network);
+num_all        = pb_quantity_numbers(all_quantities,parameter_prior,network);
 
 x_all.names       = {};
 x_all.scaling     = {};
@@ -322,7 +322,7 @@ x_data_upper = [];
 
 x_data.names   = {};
 x_data.scaling = {};
-num_data       = parameter_balancing_quantity_numbers(data_quantities,parameter_prior,network);
+num_data       = pb_quantity_numbers(data_quantities,parameter_prior,network);
 
 for it = 1:length(data_quantities),
   
@@ -392,9 +392,9 @@ end
 % -------------------------------------------------------------------
 % construct the matrix for all relevant quantities
 
-Q_all    = parameter_balancing_construct_Q_matrix(all_quantities,  basic_quantities, parameter_prior, network);
+Q_all    = pb_construct_Q_matrix(all_quantities,  basic_quantities, parameter_prior, network);
 Q_pseudo = Q_all(find(x_all.pseudo.use),:);
-Q_data   = parameter_balancing_construct_Q_matrix(data_quantities, basic_quantities, parameter_prior, network);
+Q_data   = pb_construct_Q_matrix(data_quantities, basic_quantities, parameter_prior, network);
 
 
 % -------------------------------------------------------------------

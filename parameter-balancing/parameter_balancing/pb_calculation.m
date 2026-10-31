@@ -1,11 +1,11 @@
-function [result, exitflag] = parameter_balancing_calculation(task, parameter_prior, pb_options)
+function [result, exitflag] = pb_calculation(task, parameter_prior, pb_options)
   
 % [result, exitflag] = parameter_balancing(task, parameter_prior, pb_options)
 %
 % Parameter balancing based on vectors and matrices in data structure 'task' 
 %
 % Function inputs (mandatory)
-%  task:  parameter balancing task (see parameter_balancing_task.m)
+%  task:  parameter balancing task (see pb_task.m)
 %
 % Function inputs (optional)
 %  parameter_prior: table of biochemical quantities (see biochemical_parameter_prior.m)
@@ -75,7 +75,7 @@ if isfield(task.xdata.indices,'dmu0') * isfield(pb_options,'dg_precision_file'),
       eig_max = max(eig(dg_precision));
       if eig_min < (10^-10)*eig_max,
         if pb_options.verbose,
-          display('  (parameter_balancing_calculation.m): The delta G precision matrix contains negative eigenvalues or is badly conditioned. I shift all eigenvalues up');
+          display('  (pb_calculation.m): The delta G precision matrix contains negative eigenvalues or is badly conditioned. I shift all eigenvalues up');
           end
         dg_precision = dg_precision + [-min(eig_min,0)+(10^-10)*eig_max] * eye(size(dg_precision,1));
       end
@@ -124,9 +124,9 @@ if find(eigenvalues<0),
 end
 
 if abs(max(eigenvalues) / min(eigenvalues)) > 10^15,
-  log_text = [log_text, '\n  (parameter_balancing_calculation.m): Inverse posterior covariance matrix appears ill-conditioned - please check for unrealistically small error bars in your data file'];
+  log_text = [log_text, '\n  (pb_calculation.m): Inverse posterior covariance matrix appears ill-conditioned - please check for unrealistically small error bars in your data file'];
   if pb_options.verbose,
-    display(sprintf('  WARNING (parameter_balancing_calculation.m): Inverse posterior covariance matrix appears ill-conditioned (eigenvalues between %g and %g)', min(eigenvalues), max(eigenvalues)));
+    display(sprintf('  WARNING (pb_calculation.m): Inverse posterior covariance matrix appears ill-conditioned (eigenvalues between %g and %g)', min(eigenvalues), max(eigenvalues)));
     figure(1000); plot(eigenvalues); 
     xlabel('ordering'); ylabel('eigenvalue of inverse posterior covariance matrix'); set(gca,'YScale','Log');
   end
@@ -289,7 +289,7 @@ end
 
 [nr,nm,nx,ind_KM,ind_KA,ind_KI,nKM,nKA,nKI] = network_numbers(task.network);
 
-num_model = parameter_balancing_quantity_numbers(task.model_quantities,parameter_prior,task.network);
+num_model = pb_quantity_numbers(task.model_quantities,parameter_prior,task.network);
 
 for it = 1:length(task.model_quantities),
   

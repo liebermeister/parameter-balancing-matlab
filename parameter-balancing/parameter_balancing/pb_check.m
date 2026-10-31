@@ -1,13 +1,13 @@
 % ECM_CHECK_PARAMETER_BALANCING - Checks for balanced parameters
 %
-% parameter_balancing_check(r, r_orig, network, parameter_prior, show_graphics, show_concentrations,show_dmu0,show_enzyme)
+% pb_check(r, r_orig, network, parameter_prior, show_graphics, show_concentrations,show_dmu0,show_enzyme)
 %
 % Summary of changes from original parameters to balanced parameters: 
 % Show diagnostic plots and show lists of large fold changes
 %
 % show_dmu0: show standard Delta G values instead of equilibrium constants 
 
-function parameter_balancing_check(r, r_orig, network, parameter_prior, show_graphics, show_concentrations, show_dmu0,show_enzyme)
+function pb_check(r, r_orig, network, parameter_prior, show_graphics, show_concentrations, show_dmu0,show_enzyme)
 
 eval(default('show_concentrations','0','show_dmu0','0','show_enzyme','0'));
   

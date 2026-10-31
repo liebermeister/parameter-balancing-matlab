@@ -21,7 +21,7 @@ function [balanced_parameters_SBtab, pb_options, network, r_mode, r_orig, kineti
 % model_name:     (optional) Model name 
 % pb_options_in:  (optional) Matlab struct with options, overriding options given in [pb_options_file]
 % 
-% For a usage example, see demo_parameter_balancing.m
+% For a usage example, see demo_pb.m
 %
 % Optional arguments can be left empty ('[]')
 
@@ -90,7 +90,7 @@ if pb_options.flag_check,
 
   show_concentrations = pb_options.include_metabolic;
   show_dmu0 = 0;
-  parameter_balancing_check(network.kinetics, r_orig, network, parameter_prior, 1, show_concentrations, show_dmu0)
+  pb_check(network.kinetics, r_orig, network, parameter_prior, 1, show_concentrations, show_dmu0)
 
   %% --------------------
   %% check for violated haldane relationships

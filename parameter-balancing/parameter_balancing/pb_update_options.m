@@ -1,4 +1,4 @@
-function pb_options = parameter_balancing_update_options(pb_options)
+function pb_options = pb_update_options(pb_options)
 
 if  pb_options.verbose,
   display('Updating settings for parameter_balancing');
