@@ -5,8 +5,8 @@
 % Example model: E. coli central carbon metabolism, from Wortel et al. 2018 (PLoS Comp Biol)
 %
 % Input files
-%   model_file:   (SBML format)  from models/ecoli_wortel_2018/ecoli_wortel_2018.xml
-%   data_file :   (SBtab format) from models/ecoli_wortel_2018/ecoli_wortel_2018_data.tsv
+%   model_file:   (SBML format)  from resources/models/ecoli_wortel_2018/ecoli_wortel_2018.xml
+%   data_file :   (SBtab format) from resources/models/ecoli_wortel_2018/ecoli_wortel_2018_data.tsv
 %   prior_file:   default from subdirectory config/
 %   options_file: default from subdirectory config/
 %

@@ -19,7 +19,7 @@ The calculation procedure can be customised. For a list of options, see `paramet
   * `demo_pb_ecoli_wortel_2018`       - Model E. coli central carbon metabolism from Wortel et al. (2018)
   * `demo_pb_sbtab`                   - Example models from the website www.parameterbalancing.net
 
-### Tests (directory `tests`)
+### Tests (directory `tests` at the top of the repository)
 
   * `pb_run_tests`                    - Runs all example models and the main code paths; use it to check your installation
   * `pb_test_ecoli_iCH360`            - Test with the large model iCH360 (called by `pb_run_tests`; takes very long)
@@ -30,7 +30,7 @@ The default options for parameter balancing (`pb_options.tsv`) can be found in t
 
 ### Example models
 
-Example models and corresponding data files can be found in the `models` directory (one subdirectory per model).
+Example models and corresponding data files can be found in the directory `resources/models` (one subdirectory per model).
 The function `pb_example_files` returns the file names for a given example model.
 
 (C) 2018-2026 Wolfram Liebermeister  <wolfram.liebermeister@gmail.com>

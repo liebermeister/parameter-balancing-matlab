@@ -30,7 +30,7 @@ The following installation instructions are only for the Matlab version.
 - Install the Matlab interface of [libSBML](https://sbml.org/software/libsbml/) (optional - needed only if SBML model files are used)
 - Make sure that all these directories and their subdirectories, as well as the `parameter-balancing` directory of this repository (with subdirectories), are included in your Matlab path.
 - The Matlab Optimization Toolbox is required (functions `quadprog` and `linprog`).
-- To check your installation, run `pb_run_tests` in Matlab.
+- To check your installation, go to the directory `tests` and run `pb_run_tests` in Matlab.
 
 The code was tested with Matlab R2025b on Linux.
 

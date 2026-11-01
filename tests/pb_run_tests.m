@@ -4,7 +4,7 @@ function all_passed = pb_run_tests(verbose)
 %
 % all_passed = pb_run_tests(verbose)
 %
-% Runs parameter balancing for all example models in the "models" directory, and
+% Runs parameter balancing for all example models in the directory "resources/models", and
 % tests some options (posterior sampling, log file, posterior matrices) and the
 % wrapper functions parameter_balancing_kinetic and parameter_balancing_thermodynamic.
 % Finally, the large model iCH360 is tested (see pb_test_ecoli_iCH360; this takes very long).
@@ -13,6 +13,8 @@ function all_passed = pb_run_tests(verbose)
 % verbose (optional, default 0): show the output of parameter balancing
 %
 % Returns true if all tests passed
+
+addpath(genpath(fullfile(fileparts(mfilename('fullpath')), '..', 'parameter-balancing')));
 
 eval(default('verbose','0'));
 

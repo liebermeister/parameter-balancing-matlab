@@ -2,7 +2,7 @@
 % Parameter balancing demo script
 % Usage example for matlab function 'parameter_balancing'
 %
-% Example models: example models the models/ subdirectory
+% Example models: example models in the directory resources/models
 %  'pfk'                - example from Parameter balancing website
 %  'teusink'            - example from Parameter balancing website
 %  'hynne'              - example from Parameter balancing website
@@ -16,7 +16,7 @@
 % --------------------------------------------------
 
 % ----------------------------------------------------------------------
-% Choose model from "models" directory
+% Choose model from directory "resources/models"
 
 test_example = 'ecoli_noor_2016';
 %test_example = 'ecoli_noor_2016_glycolysis';

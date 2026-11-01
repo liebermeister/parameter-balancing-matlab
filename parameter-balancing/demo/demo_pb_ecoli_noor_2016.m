@@ -7,8 +7,8 @@
 % Example model: E. coli central carbon metabolism, from Noor et al. 2016 (PLoS Comp Biol)
 %
 % Input files
-%   model_file:   (SBML format)  from models/ecoli_noor_2016/ecoli_noor_2016.xml
-%   data_file :   (SBtab format) from models/ecoli_noor_2016/ecoli_noor_2016_data.tsv
+%   model_file:   (SBML format)  from resources/models/ecoli_noor_2016/ecoli_noor_2016.xml
+%   data_file :   (SBtab format) from resources/models/ecoli_noor_2016/ecoli_noor_2016_data.tsv
 %   prior_file:   default from subdirectory config/
 %   options_file: default from subdirectory config/
 %

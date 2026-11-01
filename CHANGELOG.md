@@ -8,6 +8,7 @@ First numbered version.
 
 - Version function `parameter_balancing_version` and dependency check `parameter_balancing_dependencies`
 - Example models in one subfolder per model; iCH360 model added
+- Example models moved to `resources/models` (new function `pb_resourcedir`), and tests moved to `tests`, both at the top of the repository
 - SBtab 1.1 options and position tables
 - `parameter_balancing_prior` and the prior table moved to the Metabolic Network Toolbox (`config/pb_prior.tsv` is now `mnt_prior.tsv`; see `mnt_prior_file`)
 - The main functions check the dependencies automatically, once per Matlab session

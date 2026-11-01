@@ -18,7 +18,7 @@
 %   demo_pb_ecoli_wortel_2018       - Model E. coli central carbon metabolism from Wortel et al. (2018)
 %   demo_pb_sbtab                   - Example models from the website www.parameterbalancing.net
 %
-% Tests (directory "tests")
+% Tests (directory "tests" at the top of the repository)
 %
 %   pb_run_tests                    - Run all example models and the main code paths
 %   pb_test_ecoli_iCH360            - Test with the large model iCH360 (takes very long)
@@ -30,7 +30,7 @@
 %
 % Example models
 %
-%   Example models and corresponding data files can be found in the "models" directory
+%   Example models and corresponding data files can be found in the directory "resources/models"
 %   (one subdirectory per model; see pb_example_files.m).
 %
 % (C) 2018-2026 Wolfram Liebermeister  <wolfram.liebermeister@gmail.com>

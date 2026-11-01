@@ -15,7 +15,7 @@ INSTALLATION
       o SBtab toolbox              (https://github.com/liebermeister/sbtab-matlab)
       o libSBML Matlab interface   (https://sbml.org/software/libsbml/) - only needed for SBML model files
       o Matlab Optimization Toolbox
-  4. To check the installation, run 'pb_run_tests' in Matlab
+  4. To check the installation, go to the directory 'tests' and run 'pb_run_tests' in Matlab
 
 
 STATE OF THE SOFTWARE
