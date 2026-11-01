@@ -1,5 +1,9 @@
 function pb_options = pb_update_options(pb_options)
 
+% PB_UPDATE_OPTIONS - Complete the options for parameter balancing and make them consistent
+%
+% pb_options = pb_update_options(pb_options)
+
 if  pb_options.verbose,
   display('Updating settings for parameter_balancing');
 end

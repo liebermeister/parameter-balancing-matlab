@@ -7,7 +7,7 @@ function all_passed = pb_run_tests(verbose)
 % Runs parameter balancing for all example models in the directory "resources/models", and
 % tests some options (posterior sampling, log file, posterior matrices) and the
 % wrapper functions parameter_balancing_kinetic and parameter_balancing_thermodynamic.
-% Finally, the large model iCH360 is tested (see pb_test_ecoli_iCH360; this takes very long).
+% Finally, the large model iCH360 is tested (see pb_test_escherichia_coli_iCH360; this takes very long).
 % Output files are written to a temporary directory, which is deleted afterwards.
 %
 % verbose (optional, default 0): show the output of parameter balancing
@@ -18,7 +18,7 @@ addpath(genpath(fullfile(fileparts(mfilename('fullpath')), '..', 'parameter-bala
 
 eval(default('verbose','0'));
 
-examples = {'pfk', 'teusink', 'hynne', 'hynne_inh', 'jiang', 'ecoli_noor_2016', 'ecoli_noor_2016_glycolysis', 'ecoli_wortel_2018'};
+examples = {'pfk', 'teusink', 'hynne', 'hynne_inh', 'jiang', 'escherichia-coli_noor_2016', 'escherichia-coli_noor_2016_glycolysis', 'escherichia-coli_wortel_2018'};
 
 outdir = tempname;
 mkdir(outdir);
@@ -50,12 +50,12 @@ tests(end+1,:) = {'parameter_balancing_kinetic',       @() test_kinetic(options)
 tests(end+1,:) = {'parameter_balancing_thermodynamic', @() test_thermodynamic(options)};
 
 % --- large model (takes very long)
-tests(end+1,:) = {'ecoli_iCH360 (large model)',        @() pb_test_ecoli_iCH360(options)};
+tests(end+1,:) = {'escherichia-coli_iCH360 (large model)',        @() pb_test_escherichia_coli_iCH360(options)};
 
 n_failed = 0;
 for it = 1:size(tests,1),
   try
-    if strcmp(tests{it,1}, 'ecoli_iCH360 (large model)'),
+    if strcmp(tests{it,1}, 'escherichia-coli_iCH360 (large model)'),
       fprintf('  Running test "%s" - this takes very long ...\n', tests{it,1});
     end
     if verbose,
@@ -105,7 +105,7 @@ end
 
 function test_kinetic(options)
 
-[~, model_file, data_file] = pb_example_files('ecoli_noor_2016');
+[~, model_file, data_file] = pb_example_files('escherichia-coli_noor_2016');
 network = network_import_model(model_file, struct('load_quantity_table',0));
 r = parameter_balancing_kinetic(network, data_file, options);
 assert(all(isfinite(r.Keq)) && all(r.Keq > 0), 'Invalid equilibrium constants');
@@ -115,7 +115,7 @@ assert(all(isfinite(r.Keq)) && all(r.Keq > 0), 'Invalid equilibrium constants');
 
 function test_thermodynamic(options)
 
-[~, model_file, data_file] = pb_example_files('ecoli_noor_2016');
+[~, model_file, data_file] = pb_example_files('escherichia-coli_noor_2016');
 network = network_import_model(model_file, struct('load_quantity_table',0));
 [nm,nr] = size(network.N);
 v = ones(nr,1);

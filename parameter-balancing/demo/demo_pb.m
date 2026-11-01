@@ -5,8 +5,8 @@
 % Example model: E. coli central carbon metabolism, from Noor et al. 2016 (PLoS Comp Biol)
 %
 % Input files
-%   model_file:   (SBML format)  from resources/models/ecoli_noor_2016/ecoli_noor_2016.xml
-%   data_file :   (SBtab format) from resources/models/ecoli_noor_2016/ecoli_noor_2016_data.tsv
+%   model_file:   (SBML format)  from resources/models/escherichia-coli_noor_2016/escherichia-coli_noor_2016.xml
+%   data_file :   (SBtab format) from resources/models/escherichia-coli_noor_2016/escherichia-coli_noor_2016_data.tsv
 %   prior_file:   default from subdirectory config/
 %   options_file: default from subdirectory config/
 %
@@ -14,10 +14,10 @@
 % --------------------------------------------------
 
 model_name   = 'E. coli central metabolism, Noor et al (2016)';
-model_file   = [pb_resourcedir '/models/ecoli_noor_2016/ecoli_noor_2016.xml'];
-data_file    = [pb_resourcedir '/models/ecoli_noor_2016/ecoli_noor_2016_data.tsv'];
+model_file   = [pb_resourcedir '/models/escherichia-coli_noor_2016/escherichia-coli_noor_2016.xml'];
+data_file    = [pb_resourcedir '/models/escherichia-coli_noor_2016/escherichia-coli_noor_2016_data.tsv'];
 prior_file   = mnt_prior_file;
-options_file = [pb_DIR '/config/pb_options.tsv'];
-output_file  = [tempdir 'demo_pb_ecoli_noor_2016.tsv'];
+options_file = [pb_basedir '/parameter-balancing/config/pb_options.tsv'];
+output_file  = [tempdir 'demo_pb_escherichia_coli_noor_2016.tsv'];
 
 [result, pb_options] = parameter_balancing(model_file, output_file, data_file, prior_file, options_file, model_name,struct('flag_check',1,'preferred_data_element_ids','id'));

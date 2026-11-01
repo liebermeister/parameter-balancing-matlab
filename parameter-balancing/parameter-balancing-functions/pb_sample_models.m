@@ -1,5 +1,11 @@
 function [v, kinetics_list] = pb_sample_models(task,kinetics_sample,options)
 
+% PB_SAMPLE_MODELS - Build kinetic models from sampled kinetic constants and compute their fluxes
+%
+% [v, kinetics_list] = pb_sample_models(task, kinetics_sample, options)
+%
+% options (optional): fields 'compute_v', 'construct_models', 'ind_samples', 'n_sample'
+
 eval(default('options','struct'));
 options_default = struct('compute_v',1,'construct_models','1','ind_samples',[],'n_sample',[]);
 options = join_struct(options_default,options);
