@@ -5,8 +5,8 @@
 % Example model: E. coli central carbon metabolism, from Wortel et al. 2018 (PLoS Comp Biol)
 %
 % Input files
-%   model_file:   (SBML format)  from resources/models/ecoli_wortel_2018/ecoli_wortel_2018.xml
-%   data_file :   (SBtab format) from resources/models/ecoli_wortel_2018/ecoli_wortel_2018_data.tsv
+%   model_file:   (SBML format)  from resources/models/escherichia-coli_wortel_2018/escherichia-coli_wortel_2018.xml
+%   data_file :   (SBtab format) from resources/models/escherichia-coli_wortel_2018/escherichia-coli_wortel_2018_data.tsv
 %   prior_file:   default from subdirectory config/
 %   options_file: default from subdirectory config/
 %
@@ -16,7 +16,7 @@
 % ----------------------------------------------------------------------------
 % Load model and data 
 
-[model_name, model_file, data_file, pb_prior_file] = pb_example_files('ecoli_wortel_2018');
+[model_name, model_file, data_file, pb_prior_file] = pb_example_files('escherichia-coli_wortel_2018');
  
 display(sprintf('Balancing the parameters for model "%s"', model_name))
 

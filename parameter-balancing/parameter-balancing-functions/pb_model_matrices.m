@@ -1,5 +1,9 @@
 function model_matrices = pb_model_matrices(network)
 
+% PB_MODEL_MATRICES - Compute the matrices that are used to express dependencies between model quantities
+%
+% model_matrices = pb_model_matrices(network)
+
 [nr,nm,nx,KM_indices,KA_indices,KI_indices,nKM,nKA,nKI] = network_numbers(network);
 
 model_matrices.Nt         = sparse(network.N');

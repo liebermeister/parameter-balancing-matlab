@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the article below."
+title: "Parameter balancing for Matlab"
+type: software
+authors:
+  - family-names: Liebermeister
+    given-names: Wolfram
+version: 1.0.0
+license: GPL-2.0-or-later
+repository-code: "https://github.com/liebermeister/parameter-balancing-matlab"
+preferred-citation:
+  type: article
+  authors:
+    - family-names: Lubitz
+      given-names: Timo
+    - family-names: Liebermeister
+      given-names: Wolfram
+  title: "Parameter balancing: consistent parameter sets for kinetic metabolic models"
+  journal: Bioinformatics
+  year: 2019
+  volume: 35
+  issue: 19
+  start: 3857
+  doi: "10.1093/bioinformatics/btz129"

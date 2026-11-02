@@ -1,5 +1,9 @@
 function pb_graphics1(task,res)
 
+% PB_GRAPHICS1 - Plot prior, data and posterior values of basic, data and model quantities
+%
+% pb_graphics1(task, res)
+
 figure(1); clf
 subplot(2,1,1); plot(task.q.prior.mean,'c'); hold on; plot(res.q_posterior.mean,'b--'); ylabel('Mean'); title('Basic quantities')
 legend('Prior','Posterior');
