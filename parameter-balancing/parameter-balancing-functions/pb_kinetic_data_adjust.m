@@ -8,8 +8,25 @@ else
   Keq_given = [];
 end
 
+% Concentration bounds given as vectors (one value per metabolite) in pb_options.conc_min
+% and pb_options.conc_max: insert them where no bounds are given in kinetic_data
+% (scalar values are used as default bounds in the prior table, see pb_parameter_prior_adjust)
+
+if isfield(kinetic_data,'c')
+  nm = length(network.metabolites);
+  if isfield(pb_options,'conc_min') && length(pb_options.conc_min) == nm && nm > 1
+    ind = find(~isfinite(kinetic_data.c.lower));
+    kinetic_data.c.lower(ind) = pb_options.conc_min(ind);
+  end
+  if isfield(pb_options,'conc_max') && length(pb_options.conc_max) == nm && nm > 1
+    ind = find(~isfinite(kinetic_data.c.upper));
+    kinetic_data.c.upper(ind) = pb_options.conc_max(ind);
+  end
+end
+
 % If desired, replace missing data values by pseudo values
 % Insert lower and upper bounds (from prior table) where no such bounds are given
+% (and complete logarithmic bounds from non-logarithmic ones)
 
 kinetic_data = kinetic_data_complete(kinetic_data,parameter_prior,pb_options.insert_pseudo_values,network);
 

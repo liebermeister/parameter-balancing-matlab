@@ -88,7 +88,10 @@ end
 
 ll = label_names({'concentration'},  parameter_prior.QuantityType);
 
-if ~isempty(options.conc_min),
+% Default concentration bounds: only scalar values can be inserted into the prior table.
+% Vectors (one bound for each metabolite) are inserted as data bounds (see pb_kinetic_data_adjust)
+
+if ~isempty(options.conc_min) && isscalar(options.conc_min),
   if options.conc_min ~= eval(parameter_prior.LowerBound{ll}),
   if options.verbose, 
     display(sprintf('Setting default minimum concentration to %f',options.conc_min)); 
@@ -97,7 +100,7 @@ if ~isempty(options.conc_min),
   end
 end
 
-if ~isempty(options.conc_max),
+if ~isempty(options.conc_max) && isscalar(options.conc_max),
   if options.conc_max ~= eval(parameter_prior.UpperBound{ll}), 
   if options.verbose, 
     display(sprintf('Setting default maximum concentration to %f',options.conc_max)); 

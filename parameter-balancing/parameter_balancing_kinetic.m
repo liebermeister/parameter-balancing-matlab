@@ -12,7 +12,8 @@ function [r, r_orig, kinetic_data, r_samples, parameter_prior, r_mean, r_std,r_g
 %   pb_options         Parameter balancing options used (see 'parameter_balancing_options')
 %
 % Output
-%   r               Kinetic constants (posterior mode values, respecting the linear constraints)
+%   r               Kinetic constants (posterior mode values, respecting the linear constraints),
+%                   including the geometric mean rate constants KV = sqrt(Kcatf .* Kcatr)
 %   r_orig          Original kinetic constants (used as input in parameter balancing)
 %   r_mean          Kinetic constants (posterior means, ignoring the  linear constraints)
 %   r_std           Kinetic constants (posterior standard deviations, ignoring the  linear constraints)
@@ -115,3 +116,11 @@ task   = pb_task(network, kinetic_data, parameter_prior, model_quantities, basic
 result = pb_calculation(task, parameter_prior, pb_options);
 
 [r,r_mean,r_std,r_geom_mean,r_geom_std,r_orig,r_samples] = pb_output(result, kinetic_data_orig, pb_options, network);
+
+% ----------------------------------------------------------------
+% Geometric mean rate constants KV = sqrt(Kcatf .* Kcatr) (needed in modular rate laws);
+% insert them if they have not been computed (e.g., in the parametrisation by catalytic constants)
+
+if isfield(r,'Kcatf') && isfield(r,'Kcatr') && ~isfield(r,'KV')
+  r.KV = sqrt(r.Kcatf .* r.Kcatr);
+end
