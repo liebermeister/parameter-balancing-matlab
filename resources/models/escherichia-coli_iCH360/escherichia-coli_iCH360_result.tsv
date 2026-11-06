@@ -1,4 +1,4 @@
-!!SBtab SBtabVersion='1.0' TableID='ParameterBalanced' TableType='Quantity' TableName='Parameter' Document='/home/eladn/PycharmProjects/parameter-balancing/examples/example_files/ecoli/ecoli_iCH360_data.csv' Date='2026-04-24'
+!!SBtab SBtabVersion='1.1' TableID='ParameterBalanced' TableType='Quantity' TableName='Parameter' Document='/home/eladn/PycharmProjects/parameter-balancing/examples/example_files/ecoli/ecoli_iCH360_data.csv' Date='2026-04-24'
 !QuantityType	!Reaction:SBML:reaction:id	!Compound:SBML:species:id	!Mode	!Unit	!UnconstrainedGeometricMean	!UnconstrainedGeometricStd	!UnconstrainedMean	!UnconstrainedStd	!Std	!GeometricStd	!Organism	!Reference
 standard chemical potential		M_dhap_c	0.0000	kJ/mol	NaN	NaN	0.0000	500.0000				
 concentration		M_dhap_c	0.1000	mM	0.1000	10.0000	1.4167	20.0217				
