@@ -1,0 +1,15 @@
+!!SBtab TableID='parameter_balancing_Definition' TableType='Definition' SBtabVersion='1.1' TableName='Extension definitions table of parameter-balancing'
+% Table types and columns used by this package that are not in the SBtab 1.1 definitions table.
+% It extends the default definitions, e.g. sbtab_document_set_definitions(d, 'parameter-balancing_Definition.tsv')
+% (Matlab) or: sbtab validator FILE -d -y parameter-balancing_Definition.tsv (Python).
+!Name	!Type	!Parent	!isShortname	!Format	!Description
+NameForPlots	Column	Compound	False	String	Short name shown in plots
+Option	Column	Config	True	String	Name of the option (instead of !ID)
+GeometricStd	Column	Quantity	False	Float	Geometric standard deviation
+Mode	Column	Quantity	False	Float	Mode of the (posterior) distribution
+Reference	Column	Quantity	False	String	Literature reference or data source
+UnconstrainedGeometricMean	Column	Quantity	False	Float	Posterior geometric mean without bounds (parameter balancing)
+UnconstrainedGeometricStd	Column	Quantity	False	Float	Posterior geometric standard deviation without bounds (parameter balancing)
+UnconstrainedMean	Column	Quantity	False	Float	Posterior mean without bounds (parameter balancing)
+UnconstrainedStd	Column	Quantity	False	Float	Posterior standard deviation without bounds (parameter balancing)
+NameForPlots	Column	Reaction	False	String	Short name shown in plots
