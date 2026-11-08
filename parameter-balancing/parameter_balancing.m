@@ -13,11 +13,13 @@ function [balanced_parameters_SBtab, pb_options, network, r_mode, r_orig, kineti
 %
 % Arguments:
 %
-% model_file:     Model in SBML format (path and filename)
-% output_file:    File basename (including directory path) for output files
-% data_file:      (optional) Data in SBtab format (path and filename)
-% prior_file:     (optional) Prior table in SBtab format (path and filename)
-% pb_options_file:(optional) Options table in SBtab format (path and filename)
+% model_file:     Model in SBML or SBtab format (path and filename), or SBtab document object
+%                 (with tables Reaction and Compound), or network struct
+% output_file:    File basename (including directory path) for output files (empty: no output files)
+% data_file:      (optional) Data in SBtab format (path and filename), or SBtab table or document object
+% prior_file:     (optional) Prior table in SBtab format (path and filename), or SBtab table or document object
+% pb_options_file:(optional) Options table in SBtab format (path and filename), or SBtab table or document object
+%                 (Config table, e.g. TableID 'ConfigurePB')
 % model_name:     (optional) Model name 
 % pb_options_in:  (optional) Matlab struct with options, overriding options given in [pb_options_file]
 % 
@@ -40,7 +42,7 @@ pb_options.flag_check          = 0;
 pb_options.flag_minimal_output = 0;
 
 if ~isempty(pb_options_file),
-  pb_options_table = sbtab_table_load(pb_options_file);
+  pb_options_table = sbtab_table_from_input(pb_options_file, {'ConfigurePB','OptionsPB'}, 'Config');
   % option names in column !ID (in older files: !Option)
   option_column = 'ID';
   if ~sbtab_table_has_column(pb_options_table,'ID'), option_column = 'Option'; end

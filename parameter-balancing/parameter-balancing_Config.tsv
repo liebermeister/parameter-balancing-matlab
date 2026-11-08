@@ -1,0 +1,69 @@
+!!SBtab TableID='ConfigurePB' TableType='Config' SBtabVersion='1.2' Method='parameter-balancing' TableName='Default options of Parameter balancing (Matlab)'
+% Default options of the Matlab implementation, assembled from parameter_balancing_options.m (parameter-balancing-matlab).
+% Empty values: option is empty by default ([] in Matlab); vector-valued options are
+% described in the column !Description. Flags: 1 (true) or 0 (false).
+% Option names are case-sensitive. Options file used by the Matlab function parameter_balancing
+% (columns !ID or !Option, and !Value). The file config/pb_options.tsv of the Matlab package contains
+% the options of the Python version (ph, temperature, ...), which the Matlab version does not use.
+!ID	!Value	!Description
+verbose	1	Verbose output
+parameter_prior_file		Prior table file (SBtab QuantityInfo table); empty: default prior file (see mnt_prior_file)
+kinetics	cs	Rate law type of the output model (cs: common modular rate law)
+parametrisation	catalytic rate constant	Type of model parameterization
+reaction_units	concentration per time	Unit of reaction rates (alternative: 'amount per time')
+conc_min	0.001	Default lower bound for metabolite concentrations (mM)
+conc_max	10	Default upper bound for metabolite concentrations (mM)
+kcat_prior_median		Predefined kcat prior median (1/s)
+kcat_prior_log10_std		Predefined kcat prior standard deviation (log10 scale)
+KM_lower		Default lower bound for KM values (mM)
+KM_upper		Default upper bound for KM values (mM)
+Keq_upper	100000	Default upper bound for Keq values
+Keq_lower	1e-05	Default lower bound for Keq values
+Keq_given		Given Keq values (vector, nr x 1)
+kcat_lower		Default lower bound for kcat values (1/s)
+kcatr_lower		Default lower bound for reverse kcat values (1/s)
+kcat_upper		Default upper bound for kcat values (1/s)
+epsilon	0.0001	Epsilon value for slightly stricter constraints (see pb_calculation.m)
+GFE_fixed		Fixed Gibbs free energies of formation
+kcat_usage	use	Use given kcat values
+use_data	1	Use data table
+use_pseudo_values	1	Use pseudo values
+insert_pseudo_values	0	Replace missing data values by pseudo values
+use_deltaG0_data	1	Use DeltaG0 data even if they are marked as UseAsPriorInformation=0 in the prior file
+include_metabolic	1	Consider metabolite concentrations in parameter balancing
+include_enzyme_conc	0	Consider enzyme concentrations in parameter balancing
+enzymes_explicit	1	Disregard maximal velocities in parameter balancing
+enforce_flux_directions	0	Set constraints to realize predefined flux directions (flux vector in option v)
+adjust_to_fluxes	0	Postprocessing to yield predefined fluxes (flux vector in option v; see pb_output)
+ignore_all_constraints	0	Run parameter balancing without constraints
+n_samples	0	0: no sampling; n>0: generate n sampled parameter sets
+preferred_data_element_ids	id	Data columns used for mapping data to the model ('id', 'sbml_id', or 'kegg_id')
+use_sbml_ids	1	Map data by SBML IDs (used internally; redundant with preferred_data_element_ids)
+use_kegg_ids	0	Map data by KEGG IDs (used internally; redundant with preferred_data_element_ids)
+complete_std_by_DataGeomStd	1	Complete missing data standard deviations by DataGeometricStd (instead of DataStd)
+use_python_version_defaults	0	Change default settings to obtain the same results as the Python version
+run_variability_analysis	1	Run variability analysis based on the constraints
+write_log_file	0	Write log file
+enforce_ranges	0	Enforce feasible ranges when loading kinetic data
+data_table_id		TableID of the data table (needed only if the data file contains several tables)
+flag_check	1	Check results and show diagnostic plots
+fix_irreversible_reactions	0	After balancing, set kcat values of supposedly irreversible reactions to 0
+ind_water		Indices of metabolites representing water (parameter_balancing_thermodynamic)
+set_water_conc_to_one	1	Set water concentration to 1 and remove water from the stoichiometric matrix
+data_refer_to_molar	0	Concentration data given in M (default: mM)
+sigma_mu0	3	Error of standard chemical potentials (kJ/mol)
+A_max	100	Default upper bound for driving forces (kJ/mol)
+A_min	0.5	Default lower bound for driving forces (kJ/mol)
+c_min		Lower bounds for concentrations (vector, nm x 1)
+c_max		Upper bounds for concentrations (vector, nm x 1)
+c_fix		Fixed concentrations (vector, nm x 1)
+c_fix_strict	0	Strictly fix concentrations (otherwise, allow for a range)
+A_fix		Fixed driving forces (vector, nr x 1)
+A_lower		Lower bounds for driving forces (vector, nr x 1)
+A_upper		Upper bounds for driving forces (vector, nr x 1)
+virtual_reactions	{}	Virtual reactions (cell array)
+parameter_prior_filename		Prior table file (default: option parameter_prior_file)
+test_v_for_being_feasible	1	Test whether the flux vector is thermodynamically feasible
+fix_Keq_in_sampling	0	Keep Keq values fixed in sampling
+write_all_quantities	no	Quantities listed in the output table ('no', 'many', 'all', 'only_kinetic')
+export_posterior_matrices	0	Export matrices describing the posterior to files

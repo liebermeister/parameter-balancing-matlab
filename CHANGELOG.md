@@ -4,6 +4,9 @@ Version numbers have the form MAJOR.MINOR.PATCH. MAJOR changes when existing cal
 
 ## 1.0.0 (not released yet)
 
+- `parameter_balancing` and `parameter_balancing_sbtab` accept SBtab objects instead of files: model (SBtab document object or network struct), data (SBtab table or document object), prior table, and options table (Config table object). Needs mnt with the SBtab object support of `network_import_model` and `kinetic_data_load`
+- Default options in the SBtab Config file `parameter-balancing/parameter-balancing_Config.tsv` (TableID `ConfigurePB`): `parameter_balancing_options` reads the default values from this file and only describes the options. Needs matlab-utils with `load_config_table` (later than 1.0.0); the dependency check warns if it is missing.
+- New file `parameter-balancing/parameter-balancing_ToolInputOutput.tsv` (SBtab 1.2 table type ToolInputOutput) describing the input and output tables of parameter balancing (for information only; not used by the code)
 First numbered version.
 
 - Version function `parameter_balancing_version` and dependency check `parameter_balancing_dependencies`

@@ -9,8 +9,11 @@ function [network, r, r_orig, kinetic_data, r_samples, parameter_prior, r_mean, 
 %  o runs parameter balancing (without and with concentration data)
 % 
 % Function arguments:
-%  model_file:           SBtab or SBML model filename; files with ".xml" extension are assumed to be SBML, otherwise SBtab
-%  data_file:            SBtab data file (kinetic and other constants)
+%  model_file:           SBtab or SBML model filename; files with ".xml" extension are assumed to be SBML, otherwise SBtab;
+%                        alternatively, an SBtab document object (with tables Reaction and Compound) or a network struct
+%  data_file:            SBtab data file (kinetic and other constants), or SBtab table object, or SBtab document
+%                        object (table chosen by option data_table_id, otherwise the first table of type Quantity);
+%                        or a cell array of these
 %  pb_options:           (optional) struct with settings for parameter balancing; for default values, see 'parameter_balancing_options'
 %  pb_options.parameter_prior_file:        File with parameter priors (optional)
 %  pb_options.use_python_version_defaults  Flag - use same default settings as in the python version
@@ -41,7 +44,11 @@ pb_options = pb_update_options(join_struct(parameter_balancing_options, pb_optio
 % load model
 
 if pb_options.verbose,
-  display(sprintf('o Using model file %s', model_file))
+  if ischar(model_file),
+    display(sprintf('o Using model file %s', model_file))
+  else
+    display('o Using model given as a data structure (SBtab document or network struct)')
+  end
 end
 
 network = network_import_model(model_file, struct('load_quantity_table',0));
@@ -84,10 +91,10 @@ if pb_options.verbose,
   if length(data_file), 
     if iscell(data_file),
       for it = 1:length(data_file),
-        display(sprintf('o Using data file %s', data_file{it})); 
+        display(sprintf('o Using data file %s', input_description(data_file{it}))); 
       end
     else
-      display(sprintf('o Using data file %s', data_file)); 
+      display(sprintf('o Using data file %s', input_description(data_file))); 
     end
   end
 end
@@ -129,3 +136,14 @@ if pb_options.fix_irreversible_reactions,
 end
 
 network.kinetics = r;
+
+
+% ----------------------------------------------------------
+
+function description = input_description(data_file)
+
+if ischar(data_file),
+  description = data_file;
+else
+  description = '[SBtab object]';
+end

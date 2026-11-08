@@ -38,7 +38,7 @@ The code was tested with Matlab R2025b on Linux.
 
 | Folder | Contents |
 |---|---|
-| `parameter-balancing` | main functions (see below) and options (`parameter_balancing_options`) |
+| `parameter-balancing` | main functions (see below) and options (`parameter_balancing_options`; default values in the SBtab Config file `parameter-balancing_Config.tsv`); SBtab extension definitions (`parameter-balancing_Definition.tsv`) and input and output tables (`parameter-balancing_ToolInputOutput.tsv`) |
 | `parameter-balancing/parameter-balancing-functions` | other functions |
 | `parameter-balancing/demo` | demo scripts |
 | `parameter-balancing/config` | default options (`pb_options.tsv`) |

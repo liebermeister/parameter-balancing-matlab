@@ -1,0 +1,13 @@
+!!SBtab TableID='ToolInputOutput' TableType='ToolInputOutput' SBtabVersion='1.2' Method='parameter-balancing' TableName='Input and output tables of Parameter balancing'
+% Matlab: parameter_balancing(model_file, output_file, data_file, prior_file, pb_options_file).
+% Rows guessed from the Matlab code and the example files of the package.
+!RequiredIn	!RequiredTable	!TableID	!File	!IsOptional	!RequiredColumns	!Comment
+Input	Reaction	Reaction	model file	False	ID, ReactionFormula, Identifiers:kegg.reaction	Model (alternatively given as SBML file)
+Input	Compound	Compound	model file	False	ID, Identifiers:kegg.compound	Model (alternatively given as SBML file)
+Input	Quantity		data file	True	QuantityType, Reaction, Compound, Mean, Std, Unit	Kinetic and thermodynamic data; option data_table_id if the file contains several tables
+Input	QuantityInfo	PriorTable	prior file	True	QuantityType, Symbol, Unit, PriorMedian, PriorGeometricStd, LowerBound, UpperBound, DataGeometricStd	Default: mnt_prior.tsv (Metabolic Network Toolbox)
+Input	Config	ConfigurePB	options file	True	ID, Value	Options (column !Option instead of !ID in older files)
+Output	Quantity	Parameter	[output_file]_balanced_parameters.tsv	False	QuantityType, ID, Reaction, Compound, Mode, Unit, UnconstrainedGeometricMean, UnconstrainedGeometricStd, UnconstrainedMean, UnconstrainedStd	Balanced parameters (the Unconstrained... columns are written only with flag_minimal_output)
+Output	Quantity	ParameterData	[output_file]_preprocessed_data.tsv	False	QuantityType, Reaction, Compound, Mean, Std, Unit	Data mapped to the model (written by kinetic_data_save)
+Output	Quantity	Parameter	[output_file]_samples.tsv	True	QuantityType, ID, Reaction, Compound, Mode, Unit, Sample1, Sample2, ...	Posterior samples (option n_samples > 0)
+Output	Config	OptionsPB	[output_file]_options.tsv	False	ID, Value	Options used
