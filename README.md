@@ -18,7 +18,7 @@ balanced_parameters_SBtab = parameter_balancing(model_file, 'my_results.tsv', da
 ```
 
 ### Python
-For using parameter balancing in python, please refer to the [www.parameterbalancing.net](https://www.parameterbalancing.net) page. More recent code is found on our GitLab repository [gitlab.com/elad.noor/parameter-balancing](https://gitlab.com/elad.noor/parameter-balancing)
+For using parameter balancing in python, please refer to the [www.parameterbalancing.net](https://www.parameterbalancing.net) page. More recent code is found on our GitLab repository [gitlab.com/eladnoor/parameter-balancing](https://gitlab.com/eladnoor/parameter-balancing)
 
 ## Installation
 The following installation instructions are only for the Matlab version.
