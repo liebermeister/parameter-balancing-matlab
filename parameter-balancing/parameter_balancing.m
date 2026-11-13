@@ -131,7 +131,7 @@ end
 
 if length(output_file),
   %% save table with preprocessed data
-  kinetic_data_save(kinetic_data, network, [output_file '_preprocessed_data.tsv'], [], pb_options.verbose);
+  kinetic_data_save(kinetic_data, network, [output_file '_preprocessed_data.tsv'], [], pb_options.verbose, pb_options.standard_concentration);
 
   %% save table with balanced parameters
   sbtab_table_save(balanced_parameters_SBtab,struct('filename',[output_file '_balanced_parameters.tsv']));
