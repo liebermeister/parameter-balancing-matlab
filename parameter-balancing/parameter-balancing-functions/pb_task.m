@@ -206,12 +206,15 @@ for it = 1:length(basic_quantities),
     case 'Reaction/Species', ee = ones(length(network.actions), length(network.metabolites));
   end
   
+  % shift from the standard concentration of the prior table to 1 mM (only for Keq, dmu0, mu0)
+  my_shift = prior_standard_concentration_shift(parameter_prior, my_symbol, network);
+
   if strcmp(my_scaling, 'Multiplicative'),
-    prior.(my_symbol).mean_ln = log(my_prior_median) * ee;
+    prior.(my_symbol).mean_ln = log(my_prior_median) * ee + my_shift;
     prior.(my_symbol).std_ln  = log(10) * my_prior_std * ee;
     [prior.(my_symbol).mean, prior.(my_symbol).std] = lognormal_log2normal(prior.(my_symbol).mean_ln, prior.(my_symbol).std_ln);
   else,
-    prior.(my_symbol).mean = my_prior_median * ee;
+    prior.(my_symbol).mean = my_prior_median * ee + my_shift;
     prior.(my_symbol).std  = my_prior_std * ee;
   end
   
@@ -224,7 +227,7 @@ for it = 1:length(basic_quantities),
   task.q.names(my_indices,:)   = repmat(basic_quantities(it), num_basic(it),1);
   task.q.scaling(my_indices,:) = repmat({my_scaling}, num_basic(it),1);
   task.q.indices.(my_symbol)   = my_indices;
-  task.q.prior.mean            = [task.q.prior.mean; my_prior_median * ones(num_basic(it),1)];
+  task.q.prior.mean            = [task.q.prior.mean; my_prior_median * ones(num_basic(it),1) + column(my_shift)];
   task.q.prior.std             = [task.q.prior.std ; my_prior_std    * ones(num_basic(it),1)];
 
 end
@@ -297,8 +300,11 @@ for it = 1:length(all_quantities),
     my_all_upper     = log(my_all_upper);
   end
 
-  x_all.upper_nat   = [x_all.upper_nat;   my_all_upper     * ones(num_all(it),1)];
-  x_all.lower_nat   = [x_all.lower_nat;   my_all_lower     * ones(num_all(it),1)];
+  % shift from the standard concentration of the prior table to 1 mM (only for Keq, dmu0, mu0)
+  my_shift = column(prior_standard_concentration_shift(parameter_prior, my_symbol, network));
+
+  x_all.upper_nat   = [x_all.upper_nat;   my_all_upper     * ones(num_all(it),1) + my_shift];
+  x_all.lower_nat   = [x_all.lower_nat;   my_all_lower     * ones(num_all(it),1) + my_shift];
   
   my_pseudo_median = cell_string2num(parameter_prior.PriorMedian(ind));
   my_pseudo_std    = cell_string2num(parameter_prior.PriorStd(ind));
@@ -307,7 +313,7 @@ for it = 1:length(all_quantities),
     my_pseudo_std    = log(10) * my_pseudo_std;
   end
   flag_use_as_pseudo_value = sum(label_names(my_quantity,pseudo_quantities))>0;
-  x_all.pseudo.mean = [x_all.pseudo.mean; my_pseudo_median * ones(num_all(it),1)];
+  x_all.pseudo.mean = [x_all.pseudo.mean; my_pseudo_median * ones(num_all(it),1) + my_shift];
   x_all.pseudo.std  = [x_all.pseudo.std ; my_pseudo_std    * ones(num_all(it),1)];
   x_all.pseudo.use  = [x_all.pseudo.use ; flag_use_as_pseudo_value * ones(num_all(it),1)];
 end

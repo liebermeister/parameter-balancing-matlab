@@ -66,4 +66,5 @@ parameter_prior_filename		Prior table file (default: option parameter_prior_file
 test_v_for_being_feasible	1	Test whether the flux vector is thermodynamically feasible
 fix_Keq_in_sampling	0	Keep Keq values fixed in sampling
 write_all_quantities	no	Quantities listed in the output table ('no', 'many', 'all', 'only_kinetic')
+standard_concentration	1 mM	Standard concentration ('1 mM' or '1 M') of equilibrium constants, standard chemical potentials and standard reaction Gibbs free energies in the output table of balanced parameters (declared by the table attribute StandardConcentration). Data and prior tables are read in the standard concentration they declare.
 export_posterior_matrices	0	Export matrices describing the posterior to files

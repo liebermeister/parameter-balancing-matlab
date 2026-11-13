@@ -113,7 +113,7 @@ end
 % ----------------------------------------------------------------------
 % Convert results (kinetics data structure) to SBtab table struct and save to file
 
-opt_output = struct('write_all_quantities', pb_options.write_all_quantities, 'use_sbml_ids',0,'document_name',model_name,'kinetics_mode',r_mode);
+opt_output = struct('write_all_quantities', pb_options.write_all_quantities, 'use_sbml_ids',0,'document_name',model_name,'kinetics_mode',r_mode,'standard_concentration',pb_options.standard_concentration);
 
 if pb_options.flag_minimal_output,
   opt_output.more_column_names   = {'UnconstrainedGeometricMean', 'UnconstrainedGeometricStd', 'UnconstrainedMean', 'UnconstrainedStd'};

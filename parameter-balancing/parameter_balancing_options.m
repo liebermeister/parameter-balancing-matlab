@@ -47,9 +47,9 @@ function options = parameter_balancing_options()
 %   options.kcat_usage            flag: use given kcat values ('use')
 %   options.KM_lower              KM value default lower bound (mM)
 %   options.KM_upper              KM value default upper bound (mM)
-%   options.Keq_upper             Keq value default upper bound
-%   options.Keq_lower             Keq value default lower bound
-%   options.Keq_given             Keq values (given vector)
+%   options.Keq_upper             Keq value default upper bound (standard concentration of the prior table)
+%   options.Keq_lower             Keq value default lower bound (standard concentration of the prior table)
+%   options.Keq_given             Keq values (given vector; standard concentration 1 mM)
 %   options.kcat_lower            kcat value default lower bound (1/s)
 %   options.kcatr_lower           reverse kcat value default lower bound (1/s)
 %   options.kcat_upper            kcat value default upper bound (1/s)
@@ -91,6 +91,10 @@ function options = parameter_balancing_options()
 %   options.test_v_for_being_feasible   flag: run previous test for feasible v
 %   options.fix_Keq_in_sampling         flag: keep Keq values fixed in sampling
 %   options.write_all_quantities        which quantities to list in output table: 'no', 'many', 'all', 'only_kinetic'
+%   options.standard_concentration      standard concentration ('1 mM' or '1 M') of equilibrium constants, standard
+%                                       chemical potentials and standard reaction Gibbs free energies in the output
+%                                       table of balanced parameters (declared by the table attribute
+%                                       StandardConcentration); internally, 1 mM is used
 %   options.export_posterior_matrices   flag: export posterior (described by matrices) to files
 %
 % CURRENTLY NOT USED (used in python code only; see config/pb_options.tsv):
