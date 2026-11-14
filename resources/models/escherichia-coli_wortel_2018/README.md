@@ -1,5 +1,10 @@
 # E. coli central metabolism, Wortel et al. (2018)
 
+**This is the current version of the Wortel et al. (2018) model (network and kinetic data)**, with the standard
+concentration declared (2026-11-14). An identical copy is in the enzyme-cost-minimization package. The published
+model (eFCM repository) has more content (balanced constants, flux modes, enzyme data) and is kept unchanged.
+Open question: ATP/ADP coefficient of the biomass reaction R70 (547 here, 1641 in the published model).
+
 ## Provenance (reconstructed 2026-11-14)
 
 * Network (51 reactions; Carlsson et al. model as modified in the eFCM project, biomass reaction R70 with ATP/ADP
